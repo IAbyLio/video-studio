@@ -1,4 +1,4 @@
-# video-edit
+# video-studio
 
 Un estudio de vídeo que se maneja hablando con tu IA. Le pides "hazme un reel de 20 segundos con estos tres puntos" y tu IA escribe el vídeo como una página animada (textos, animaciones, captions palabra a palabra, 3D) y lo convierte en un archivo de vídeo **en tu ordenador**.
 
@@ -29,7 +29,7 @@ Para quien hace contenido (reels, shorts, stories, vídeos para su web) y quiere
 | Clon de voz (ElevenLabs), avatar (HeyGen), IA de vídeo para ganchos | **De pago y opcionales**, con tu cuenta. Tu IA te pregunta antes de cada gasto |
 
 ## Cómo empezar
-1. Clona el repo: `git clone https://github.com/IAbyLio/video-edit` (o descarga la carpeta).
+1. Clona el repo: `git clone https://github.com/IAbyLio/video-studio` (o descarga la carpeta).
 2. Ábrela con tu IA y dile: **"Sigue ONBOARDING.md"**.
 3. Responde sus preguntas: qué quieres hacer, qué cuentas tienes, dónde están tus archivos de marca y dónde publicas. Al final hacen juntos un primer vídeo de unos segundos.
 4. Desde ahí, en cualquier sesión dentro de la carpeta: *"Hazme un vídeo de…"*.
@@ -44,7 +44,7 @@ Instala la extensión de Claude Code, abre la carpeta en VS Code (Archivo → Ab
 
 ### Claude Code en la terminal
 ```bash
-cd ruta/a/video-edit
+cd ruta/a/video-studio
 claude
 ```
 y escribe "Sigue ONBOARDING.md". Para ver los vídeos, abre la carpeta `proyectos/` con el Finder o el explorador.
@@ -53,9 +53,9 @@ y escribe "Sigue ONBOARDING.md". Para ver los vídeos, abre la carpeta `proyecto
 Si prefieres que tu IA lo instale sola, pega este prompt en Claude Code (o en tu agente con terminal) y déjala seguir los pasos. Es el mismo texto que está en [`PROMPT-INSTALACION.md`](PROMPT-INSTALACION.md):
 
 ```text
-Quiero instalar el estudio de vídeo "video-edit" en mi ordenador. Hazlo así:
+Quiero instalar el estudio de vídeo "video-studio" en mi ordenador. Hazlo así:
 
-1. Clona https://github.com/IAbyLio/video-edit en una carpeta nueva (si no te digo otra, en mi carpeta de Documentos) y ábrela como carpeta de trabajo.
+1. Clona https://github.com/IAbyLio/video-studio en una carpeta nueva (si no te digo otra, en mi carpeta de Documentos) y ábrela como carpeta de trabajo.
 2. Dentro de esa carpeta, abre ONBOARDING.md y sigue sus pasos en orden.
 3. Antes de instalar cualquier cosa en el sistema (Node, FFmpeg, whisper, etc.) explícame qué es y para qué, y espera mi OK.
 4. Nunca me pidas claves, contraseñas ni tokens por el chat: si hace falta alguna, dime que la escriba yo en el archivo .env.

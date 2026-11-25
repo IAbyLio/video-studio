@@ -1,6 +1,5 @@
 # Ganchos virales: guía de referencia
 
-> Procedencia: fundamentos destilados de material de formación de terceros sobre contenido viral (ideas ganadoras, filtro 5-50, catálogo de ganchos). Los nombres de las mecánicas son del material; los ejemplos están reescritos para este repo. Sirven igual para orgánico y para vídeo pagado (los primeros 3 segundos, el titular de una imagen, la primera línea de un texto).
 
 ## 1. Los 3 requisitos de base
 1. **Entretenido:** la gente entra a redes a buscar estímulo, no a estudiar. El "valor" sin estímulo se ignora.

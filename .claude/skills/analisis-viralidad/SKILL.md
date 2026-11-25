@@ -7,7 +7,6 @@ description: "Analiza, transforma y critica guiones, ideas, reels y ganchos con 
 
 Recibes una pieza (idea, guion, reel existente, gancho, tema suelto) y la pasas por los fundamentos de viralidad para diagnosticarla y, si hace falta, reescribirla. El norte: que compita de verdad por atención en el feed sin que la sensación total sea de vendehumos.
 
-> Procedencia: los fundamentos (SSDD, filtro 5-50, 5 pilares, catálogo de 30 ganchos) vienen de material de formación de terceros sobre contenido viral; la estructura de 8 piezas, del desmontaje de un reel público sobre retención. Están reescritos con ejemplos propios. El proceso, la regla del gancho ganado, las correcciones y el crítico se desarrollaron trabajando guiones reales.
 
 **Lee siempre, al invocar:**
 - `references/ganchos-virales.md`: los 30 ganchos con ejemplo, los 5 pilares, el filtro 5-50 y los nichos SSDD (la materia prima).

@@ -1,5 +1,5 @@
 {
-  "name": "video-edit",
+  "name": "video-studio",
   "version": "0.1.0",
   "private": true,
   "description": "Estudio de vídeo que se maneja hablando con tu IA: Hyperframes + GSAP, estilos visuales para elegir en cada vídeo y módulos opcionales (personaje 3D, mundo 3D, voz, avatar, editar lo que grabas).",
