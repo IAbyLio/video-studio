@@ -1,0 +1,5 @@
+{
+  "_doc": "Palabras que generate-captions.mjs marca con la clase .positiva o .negativa. Sin tildes ni mayúsculas importa: se normaliza. Copia este archivo y pon las tuyas.",
+  "positivas": ["gratis", "rapido", "facil", "solo", "ahorra", "funciona", "listo"],
+  "negativas": ["error", "pierdes", "perdes", "caro", "lento", "nunca", "problema"]
+}

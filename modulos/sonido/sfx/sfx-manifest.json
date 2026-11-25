@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "samples": {
+    "click": {
+      "file": "click.wav",
+      "duration": 0.08,
+      "transient_offset": 0.02,
+      "category": "ui",
+      "default_volume": 0.4,
+      "use_for": [
+        "clic en un botón",
+        "marcar una casilla"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    },
+    "impacto-suave": {
+      "file": "impacto-suave.wav",
+      "duration": 0.92,
+      "transient_offset": 0.02,
+      "category": "impact",
+      "default_volume": 0.45,
+      "use_for": [
+        "palabra clave",
+        "golpe de cámara",
+        "sello"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    },
+    "pop": {
+      "file": "pop.wav",
+      "duration": 0.2,
+      "transient_offset": 0.02,
+      "category": "reveal",
+      "default_volume": 0.35,
+      "use_for": [
+        "aparece un elemento chico",
+        "badge o etiqueta"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    },
+    "riser": {
+      "file": "riser.wav",
+      "duration": 1.52,
+      "transient_offset": 0.293,
+      "category": "riser",
+      "default_volume": 0.3,
+      "use_for": [
+        "tensión antes de un golpe (el pico está al final)"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    },
+    "swipe": {
+      "file": "swipe.wav",
+      "duration": 0.3,
+      "transient_offset": 0.023,
+      "category": "transition",
+      "default_volume": 0.3,
+      "use_for": [
+        "deslizar un panel",
+        "cambio dentro de una tarjeta"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    },
+    "tecleo": {
+      "file": "tecleo.wav",
+      "duration": 0.92,
+      "transient_offset": 0.02,
+      "category": "ui",
+      "default_volume": 0.3,
+      "use_for": [
+        "texto que se escribe letra a letra"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    },
+    "tick": {
+      "file": "tick.wav",
+      "duration": 0.065,
+      "transient_offset": 0.02,
+      "category": "ui",
+      "default_volume": 0.3,
+      "use_for": [
+        "contador que sube",
+        "paso de una lista"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    },
+    "whoosh": {
+      "file": "whoosh.wav",
+      "duration": 0.64,
+      "transient_offset": 0.025,
+      "category": "transition",
+      "default_volume": 0.35,
+      "use_for": [
+        "cambio de escena",
+        "entrada de tarjeta grande"
+      ],
+      "license": "MIT (sintetizado por código en este repo)",
+      "source": "scripts/sfx-sintetizar.mjs"
+    }
+  },
+  "_doc": "Ficha de cada efecto. transient_offset = segundos de silencio antes del sonido: data-start = evento − transient_offset (en el riser, el pico está al final: data-start = evento − duration). La validan scripts/sfx-manifest.mjs y los tests."
+}

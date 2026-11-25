@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Estilo: personaje 3D que narra</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/cara.js"></script>
+  <script src="assets/poses-data.js"></script>
+  <script src="assets/personaje.js"></script>
+  <script type="importmap">{ "imports": { "three": "./assets/vendor/three/three.module.min.js" } }</script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: var(--fuente-texto); color: var(--texto); }
+    #fondo { position: absolute; inset: 0; background: radial-gradient(80% 50% at 50% 35%, var(--superficie) 0%, var(--fondo) 60%, var(--fondo-hondo) 100%); }
+    /* Bandas de esta pieza (reel 9:16, zona segura x 35–1045 · y 220–1470, botones x > 910 entre y 1160–1470):
+       contenido: tarjeta centrada en x 540, y 330–920 · narrador: cx 250, pies 1455, alto 430 (caja ≈ x 60–440, y 1025–1455)
+       bocadillo de captions: x 500–895, y 1180–1440 (a la derecha del narrador, sin pisar la columna de botones) */
+    #gl { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .tarjeta { position: absolute; left: 185px; top: 330px; width: 710px; height: 590px; box-sizing: border-box; padding: 54px 56px;
+      background: var(--superficie-alta); border-radius: var(--radio); border: 2px solid color-mix(in srgb, var(--acento) 45%, transparent);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45); }
+    .tarjeta .rotulo { font-family: var(--fuente-mono); font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acento); }
+    .tarjeta h2 { margin: 18px 0 34px; font-family: var(--fuente-titulos); font-weight: var(--peso-titulos); font-size: 68px; line-height: 1.04; letter-spacing: -0.02em; }
+    .paso { display: flex; align-items: center; gap: 24px; margin: 0 0 26px; font-size: 40px; color: var(--texto); }
+    .paso b { flex: 0 0 64px; height: 64px; border-radius: 50%; background: var(--acento); color: var(--fondo-hondo); display: grid; place-items: center;
+      font-family: var(--fuente-titulos); font-size: 34px; }
+    .bocadillo { position: absolute; left: 500px; top: 1180px; width: 395px; height: 260px; }
+    .cap { position: absolute; left: 0; top: 0; width: 395px; height: 260px; display: flex; align-items: center;
+      font-family: var(--fuente-titulos); font-weight: 700; font-size: 54px; line-height: 1.08; letter-spacing: -0.01em; }
+    .cap em { font-style: normal; color: var(--acento); }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+    <div id="fondo" class="clip" data-start="0" data-duration="5" data-track-index="0"></div>
+    <div id="tarjeta" class="clip tarjeta" data-start="0" data-duration="5" data-track-index="1">
+      <div class="rotulo">Cómo se hace</div>
+      <h2>Un personaje que narra</h2>
+      <div class="paso" id="p1"><b>1</b>Lo dibuja el código</div>
+      <div class="paso" id="p2"><b>2</b>Habla con tu voz</div>
+      <div class="paso" id="p3"><b>3</b>Señala lo importante</div>
+    </div>
+    <canvas id="gl" class="clip" data-start="0" data-duration="5" data-track-index="2" width="1080" height="1920"></canvas>
+    <div class="bocadillo clip" id="bocadillo" data-start="0" data-duration="5" data-track-index="3">
+      <div class="cap" id="c1"><span>Te lo <em>explico</em> en tres pasos.</span></div>
+      <div class="cap" id="c2"><span>Mira el <em>segundo:</em> habla con tu voz.</span></div>
+    </div>
+  </div>
+  <script>
+    const DUR = 5;
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const reloj = { t: 0 };
+    tl.to(reloj, { t: DUR, duration: DUR, ease: "none", onUpdate: () => window.__narrador && window.__narrador(reloj.t) }, 0);
+    tl.fromTo("#tarjeta", { opacity: 0, y: 60, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 0.1);
+    tl.fromTo(["#p1", "#p2", "#p3"], { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out", stagger: 0.55 }, 1.0);
+    tl.fromTo("#p2 b", { scale: 1 }, { scale: 1.25, duration: 0.25, ease: "back.out(2)", yoyo: true, repeat: 1 }, 3.0);
+    tl.fromTo("#c1", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.4)" }, 0.6);
+    tl.to("#c1", { opacity: 0, y: -24, filter: "blur(6px)", duration: 0.22, ease: "power2.in" }, 2.45);
+    tl.fromTo("#c2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.4)" }, 2.65);
+    tl.set({}, {}, DUR);
+    window.__timelines["main"] = tl;
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    const W = 1080, H = 1920, PPU = 300, FOV = 20;
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("gl"), antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(1); renderer.setSize(W, H, false); renderer.setClearColor(0x000000, 0);
+    renderer.toneMapping = THREE.NeutralToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+    const scene = new THREE.Scene();
+    scene.add(Personaje.luces(THREE));
+    const cam = new THREE.PerspectiveCamera(FOV, W / H, 0.1, 200);
+    cam.position.set(0, 0, (H / 2) / (PPU * Math.tan((FOV / 2) * Math.PI / 180)));
+    cam.lookAt(0, 0, 0);
+    const mundo = (px, py) => ({ x: (px - W / 2) / PPU, y: (H / 2 - py) / PPU });
+
+    // Bocas sintéticas (deterministas). Con voz real: scripts/personaje/build-mouth-data.mjs → window.MOUTH.
+    function bocas(tramos) {
+      const seq = "BCDCBEAFCBDCBEFC", cues = [[0, "X"]];
+      tramos.forEach(([a, b], k) => { let t = a, i = k * 4; while (t < b) { cues.push([+t.toFixed(3), seq[i % seq.length]]); t += 0.1 + 0.03 * (i % 3); i++; } cues.push([+b.toFixed(3), "X"]); });
+      return cues;
+    }
+    const p = Personaje.crear(THREE, { paleta: Personaje.paletaDesdeCSS() });
+    const escala = (430 / PPU) / p.alto, pies = mundo(250, 1455);
+    p.grupo.scale.setScalar(escala);
+    p.grupo.position.set(pies.x, pies.y, 0);
+    p.grupo.rotation.y = 0.28;                                   // un poco girado hacia el contenido
+    scene.add(p.grupo);
+    p.setGuion({
+      poses: [[0, "reposo"], [0.5, "saluda"], [1.6, "reposo"], [2.7, "senalar-der"], [4.2, "celebrar"]],
+      expresiones: [[0, "neutro"], [0.5, "contento"], [2.6, "neutro"], [4.1, "contento"]],
+      boca: window.MOUTH || bocas([[0.6, 2.3], [2.7, 4.0]]), inicioAudio: 0,
+    });
+    window.__narrador = (t) => { p.render(t); renderer.render(scene, cam); };
+    window.__narrador(window.__timelines["main"].time());
+  </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Ejemplo: pizarra viva</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: var(--texto); font-family: var(--fuente-texto); }
+    /* Escenario con perspectiva; el tablero es un plano que la cámara inclina, gira y escala (todo desde render(t)). */
+    #stage { position: absolute; inset: 0; perspective: 2400px; perspective-origin: 540px 760px; overflow: hidden;
+      background: radial-gradient(110% 80% at 50% 45%, var(--fondo) 40%, var(--fondo-hondo) 100%); }
+    #board { position: absolute; left: 0; top: 0; width: 4000px; height: 4000px; transform-origin: 0 0; transform-style: preserve-3d;
+      background-color: var(--fondo);
+      background-image: radial-gradient(circle, color-mix(in srgb, var(--texto-suave) 22%, transparent) 2px, transparent 2.5px),
+        radial-gradient(circle, color-mix(in srgb, var(--texto-suave) 45%, transparent) 3px, transparent 3.5px);
+      background-size: 48px 48px, 240px 240px; }
+    /* el contenido vive desplazado 1000 px dentro del tablero: así la cámara nunca ve el borde, ni en el zoom-out */
+    #contenido { position: absolute; left: 0; top: 0; transform: translate(1000px, 1000px); transform-style: preserve-3d; }
+    .sombra { position: absolute; left: 0; top: 0; border-radius: 10px; background: var(--fondo-hondo); transform: translateZ(0.5px); }
+    #tinta { position: absolute; left: 0; top: 0; width: 2400px; height: 2400px; transform: translateZ(1px); overflow: visible; }
+    #tinta path { fill: none; stroke: var(--texto); stroke-linecap: round; stroke-linejoin: round; }
+    .nota { position: absolute; left: 0; top: 0; width: 360px; height: 300px; box-sizing: border-box; padding: 34px 30px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      font-family: var(--fuente-titulos); font-weight: var(--peso-titulos); font-size: 64px; line-height: 1.02; letter-spacing: -0.02em;
+      border-bottom: 10px solid rgba(0, 0, 0, 0.35); }
+    .nota::before { content: ""; position: absolute; top: 0; left: 26%; width: 48%; height: 26px; background: rgba(255, 255, 255, 0.12); }
+    #n1 { background: var(--superficie-alta); color: var(--texto); }
+    #n2 { background: var(--acento); color: var(--fondo); }
+    .mano { position: absolute; font-family: var(--fuente-titulos); font-weight: 600; font-size: 44px; color: var(--texto-suave);
+      transform: translateZ(2px) rotate(-4deg); white-space: nowrap; }
+    /* Lápiz en espacio de pantalla, proyectado sobre el plano con la misma matemática que la cámara. */
+    #lapiz { position: absolute; left: 0; top: 0; width: 64px; height: 420px; transform-origin: 32px 400px; z-index: 3; }
+    /* Captions en banda central, centradas en x = 540 (zona segura de reel). */
+    #caps { position: absolute; z-index: 4; left: 185px; width: 710px; top: 1290px; height: 130px; display: flex; align-items: center; justify-content: center;
+      text-align: center; font-family: var(--fuente-titulos); font-weight: var(--peso-titulos); font-size: 60px; line-height: 1.05;
+      text-shadow: 0 3px 0 var(--fondo-hondo), 0 0 18px var(--fondo-hondo); }
+    #caps .w { opacity: 0; display: inline-block; margin: 0 0.12em; }
+    #caps .clave { color: var(--acento); }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="5.5" data-width="1080" data-height="1920">
+    <div id="stage" class="clip" data-start="0" data-duration="5.5" data-track-index="0">
+      <div id="board"><div id="contenido">
+        <div class="sombra" id="s1"></div><div class="sombra" id="s2"></div>
+        <svg id="tinta" viewBox="0 0 2400 2400">
+          <path id="t1" stroke-width="9" /><path id="t1b" stroke-width="3" opacity="0.55" />
+          <path id="t1v" stroke-width="9" />
+          <path id="t2" stroke-width="8" />
+        </svg>
+        <div class="mano" id="m1" style="left: 1130px; top: 930px;">y entonces…</div>
+        <div class="nota" id="n1">Le pides algo</div>
+        <div class="nota" id="n2">Te lo hace</div>
+      </div></div>
+    </div>
+    <svg id="lapiz" class="clip" data-start="0" data-duration="5.5" data-track-index="1" viewBox="-32 -400 64 420">
+      <!-- punta en (0,0): cuerpo hacia arriba -->
+      <polygon points="0,0 -14,-46 14,-46" fill="var(--texto)" />
+      <rect x="-16" y="-330" width="32" height="284" rx="4" fill="var(--acento-2)" />
+      <rect x="-16" y="-366" width="32" height="36" fill="var(--texto-suave)" />
+      <rect x="-16" y="-396" width="32" height="32" rx="8" fill="var(--negativo)" />
+    </svg>
+    <div id="caps" class="clip" data-start="0" data-duration="5.5" data-track-index="2"></div>
+  </div>
+  <script>
+    (function () {
+      const DUR = 5.5;
+      // ---------------------------------------------------------------- RITMO = VOZ
+      // En un vídeo real estos tiempos salen del transcript palabra a palabra de la voz DEFINITIVA
+      // (npx hyperframes transcribe voz.wav --model small --language es --json). Cada aterrizaje, trazo y movimiento de
+      // cámara se escribe contra esta lista, con la palabra al lado. Aquí son tiempos de ejemplo.
+      const VOZ = [
+        ["Le", 0.30], ["pides", 0.48], ["algo", 0.80],          // → aterriza la nota 1 en "pides"
+        ["y", 1.55], ["entonces", 1.70],                        // → el lápiz dibuja el conector
+        ["te", 2.70], ["lo", 2.84], ["hace", 2.98],             // → aterriza la nota 2 en "hace"
+        ["Así", 4.15], ["de", 4.35], ["simple", 4.50],          // → el lápiz rodea la nota 2 y la cámara se aleja
+      ];
+      const t = (w) => VOZ.find((x) => x[0] === w)[1];
+      const CAPS = [[0, 3, "Le pides algo", ["algo"]], [3, 8, "y entonces te lo hace", ["hace"]], [8, 11, "Así de simple", []]];
+
+      // ---------------------------------------------------------------- helpers puros
+      const clamp01 = (x) => Math.min(1, Math.max(0, x));
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const io = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);   // power2.inOut
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in3 = (x) => x * x * x;
+      const P = 2400;   // perspectiva del escenario
+      const FOCO_Y = 760; // foco de cámara en pantalla: el contenido vive arriba de la banda de captions (y 1290–1420)
+      function prng(s) { let a = s >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let q = a; q = Math.imul(q ^ (q >>> 15), q | 1); q ^= q + Math.imul(q ^ (q >>> 7), q | 61); return ((q ^ (q >>> 14)) >>> 0) / 4294967296; }; }
+
+      // ---------------------------------------------------------------- notas (coordenadas del tablero)
+      const NOTAS = [
+        { id: "n1", sid: "s1", x: 640, y: 760, rot: -3, land: t("pides") },
+        { id: "n2", sid: "s2", x: 1390, y: 1320, rot: 2.5, land: t("hace") },
+      ];
+      // ---------------------------------------------------------------- trazos: mano alzada con semilla (no se ve recto)
+      function trazo(puntos, semilla, amp) {
+        const r = prng(semilla);
+        const pts = puntos.map(([x, y], i) => (i === 0 || i === puntos.length - 1) ? [x, y] : [x + (r() - 0.5) * amp, y + (r() - 0.5) * amp]);
+        let d = `M ${pts[0][0]} ${pts[0][1]}`;
+        for (let i = 1; i < pts.length - 1; i++) {
+          const [x, y] = pts[i], [nx, ny] = pts[i + 1];
+          d += ` Q ${x} ${y} ${(x + nx) / 2} ${(y + ny) / 2}`;
+        }
+        const u = pts[pts.length - 1]; return d + ` L ${u[0]} ${u[1]}`;
+      }
+      const conector = [[1005, 1000], [1150, 1040], [1290, 1110], [1370, 1210], [1385, 1300]];
+      document.getElementById("t1").setAttribute("d", trazo(conector, 7, 18));
+      document.getElementById("t1b").setAttribute("d", trazo(conector.map(([x, y]) => [x + 5, y + 4]), 9, 22));   // eco fino (doble pasada)
+      document.getElementById("t1v").setAttribute("d", "M 1350 1262 L 1386 1306 L 1420 1258");                    // punta de flecha aparte
+      // círculo con sobrepaso en espiral alrededor de la nota 2 (no cierra exacto)
+      const circ = [];
+      for (let i = 0; i <= 40; i++) { const a = -2.2 + (i / 40) * (Math.PI * 2 + 0.5); const k = 1 + 0.06 * (i / 40); circ.push([1570 + Math.cos(a) * 270 * k, 1470 + Math.sin(a) * 215 * k]); }
+      document.getElementById("t2").setAttribute("d", trazo(circ, 11, 10));
+      const TRAZOS = [
+        { ids: ["t1", "t1b"], t0: t("y") - 0.05, t1: t("te") - 0.1 },
+        { ids: ["t1v"], t0: t("te") - 0.1, t1: t("te") + 0.12 },
+        { ids: ["t2"], t0: t("Así"), t1: t("simple") + 0.45 },
+      ].map((s) => ({ ...s, els: s.ids.map((id) => document.getElementById(id)) }));
+      TRAZOS.forEach((s) => s.els.forEach((el) => { el.L = el.getTotalLength(); el.style.strokeDasharray = el.L; }));
+
+      // ---------------------------------------------------------------- cámara: [t, cx, cy, s, tilt]
+      const CAM = [
+        [0.0, 820, 930, 1.32, 9], [1.45, 840, 950, 1.26, 9],       // nota 1 ("pides")
+        [2.6, 1180, 1170, 0.92, 13], [3.7, 1220, 1200, 0.9, 12],    // sigue al conector y encuadra las dos ("hace")
+        [4.3, 1540, 1460, 1.12, 10],                                // rodea la nota 2 ("Así")
+        [5.5, 1200, 1180, 0.74, 16],                                // zoom-out final: todo el razonamiento
+      ];
+      function camara(tt) {
+        let i = 0; while (i < CAM.length - 2 && tt > CAM[i + 1][0]) i++;
+        const a = CAM[i], b = CAM[i + 1], k = io(clamp01((tt - a[0]) / (b[0] - a[0])));
+        return { cx: lerp(a[1], b[1], k) + 10 * Math.sin(tt * 0.9), cy: lerp(a[2], b[2], k) + 8 * Math.sin(tt * 0.7 + 1), s: lerp(a[3], b[3], k) * (1 + 0.006 * Math.sin(tt * 1.3)),
+          tilt: lerp(a[4], b[4], k), rz: 0.6 * Math.sin(tt * 0.5) };
+      }
+      // proyección de un punto del plano (z = 0) a pantalla, con la misma cadena que el CSS del tablero
+      function proyectar(px, py, c) {
+        const th = c.tilt * Math.PI / 180, fi = c.rz * Math.PI / 180;
+        const dx = (px - c.cx) * c.s, dy = (py - c.cy) * c.s;
+        const x1 = dx * Math.cos(fi) - dy * Math.sin(fi), y1 = dx * Math.sin(fi) + dy * Math.cos(fi);
+        const y2 = y1 * Math.cos(th), z2 = y1 * Math.sin(th), f = P / (P - z2);
+        return { x: 540 + x1 * f, y: FOCO_Y + y2 * f, f };
+      }
+
+      // ---------------------------------------------------------------- captions
+      const caps = document.getElementById("caps");
+      const words = VOZ.map(([w, tw], i) => { const s = document.createElement("span"); s.className = "w"; s.textContent = w; return { el: s, t: tw, i }; });
+
+      const board = document.getElementById("board"), lapiz = document.getElementById("lapiz");
+      function render(tt) {
+        const c = camara(tt);
+        board.style.transform = `translate(540px, ${FOCO_Y}px) rotateX(${c.tilt}deg) rotateZ(${c.rz}deg) scale(${c.s}) translate(${-c.cx - 1000}px, ${-c.cy - 1000}px)`;
+        // notas: caen desde z alto, el giro se asienta, aletean y rebotan corto; la sombra se aleja y difumina con la altura
+        for (const n of NOTAS) {
+          const u = clamp01((tt - (n.land - 0.42)) / 0.42), h = 420 * (1 - in3(u));
+          const reb = u >= 1 ? 14 * Math.exp(-(tt - n.land) * 9) * Math.sin((tt - n.land) * 26) : 0;
+          const el = document.getElementById(n.id), sh = document.getElementById(n.sid);
+          const vis = tt >= n.land - 0.42;
+          el.style.opacity = vis ? 1 : 0; sh.style.opacity = vis ? 0.55 + 0.3 * (u >= 1 ? 1 : u) : 0;
+          el.style.transform = `translate3d(${n.x}px, ${n.y}px, ${4 + h + Math.max(0, reb)}px) rotate(${n.rot + (1 - out3(u)) * 9}deg) rotateX(${(1 - u) * 16}deg)`;
+          sh.style.width = "360px"; sh.style.height = "300px";
+          sh.style.transform = `translate3d(${n.x + 10 + h * 0.16}px, ${n.y + 16 + h * 0.3}px, 0.5px) rotate(${n.rot}deg)`;
+          sh.style.filter = `blur(${3 + h * 0.07}px)`;
+        }
+        // trazos: ninguno aparece antes de que pase el lápiz (mismo progreso para trazo y punta)
+        let punta = null;
+        for (const s of TRAZOS) {
+          const p = clamp01((tt - s.t0) / (s.t1 - s.t0));
+          s.els.forEach((el) => { el.style.strokeDashoffset = el.L * (1 - p); el.style.visibility = p > 0 ? "visible" : "hidden"; });
+          if (tt >= s.t0 && tt <= s.t1) { const pt = s.els[0].getPointAtLength(s.els[0].L * p); punta = { x: pt.x, y: pt.y, apoyado: true }; }
+        }
+        // anotación a mano: se revela con el conector
+        const pm = clamp01((tt - t("entonces")) / 0.5);
+        document.getElementById("m1").style.clipPath = `inset(-20% ${100 - pm * 100}% -20% -5%)`;
+        // entre trazos el lápiz viaja levantado; antes del primero y después del último, fuera de cuadro
+        if (!punta) {
+          const fin1 = TRAZOS[1].t1, ini2 = TRAZOS[2].t0;
+          if (tt > fin1 && tt < ini2) {
+            const a = TRAZOS[1].els[0].getPointAtLength(TRAZOS[1].els[0].L), b = TRAZOS[2].els[0].getPointAtLength(0);
+            const k = io(clamp01((tt - fin1) / (ini2 - fin1)));
+            punta = { x: lerp(a.x, b.x, k), y: lerp(a.y, b.y, k) - 60 * Math.sin(Math.PI * k), apoyado: false };
+          }
+        }
+        if (punta) {
+          const q = proyectar(punta.x, punta.y, c), esc = 0.85 * c.s * q.f;
+          lapiz.style.opacity = 1;
+          lapiz.style.transform = `translate(${q.x - 32}px, ${q.y - 400 + (punta.apoyado ? 0 : -24)}px) rotate(-28deg) scale(${esc})`;
+        } else lapiz.style.opacity = 0;
+        // captions: bloque activo, palabra a palabra con pop
+        const blk = CAPS.find((b, j) => tt >= VOZ[b[0]][1] - 0.1 && (j === CAPS.length - 1 || tt < VOZ[CAPS[j + 1][0]][1] - 0.1));
+        caps.replaceChildren();
+        if (blk) for (let i = blk[0]; i < blk[1]; i++) {
+          const w = words[i], k = clamp01((tt - w.t) / 0.22);
+          w.el.className = "w" + (blk[3].includes(w.el.textContent) ? " clave" : "");
+          w.el.style.opacity = k; w.el.style.transform = `translateY(${(1 - out3(k)) * 22}px) scale(${0.92 + 0.08 * out3(k)})`;
+          caps.appendChild(w.el);
+        }
+      }
+
+      window.__P = { time: 0 };
+      const tl = gsap.timeline({ paused: true });
+      tl.to(window.__P, { time: DUR, duration: DUR, ease: "none", onUpdate: () => render(window.__P.time) }, 0);
+      tl.set({}, {}, DUR);
+      render(0);
+      document.fonts.ready.then(() => render(window.__P.time));
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+{
+  "_doc": "Registro de voces. scripts/voz.mjs solo genera con un perfil declarado aquí, habilitado, con voice_id y con nota de autorización; cualquier otro ID se rechaza antes de llamar a la API. Viene vacío a propósito: cada persona declara la suya (ejemplo y campos en modulos/voz/README.md). Campos: nombre (para humanos), nombre_remoto (nombre exacto de la voz en ElevenLabs; se comprueba antes de generar), voice_id, habilitado, modelo por defecto (v2 = eleven_multilingual_v2, v4 = eleven_v4 con etiquetas de emoción), language_code (solo v4), settings por modelo, postproceso.semitonos (entero -12..12, se aplica con ffmpeg sin créditos), autorizacion (obligatoria).",
+  "perfiles": {}
+}

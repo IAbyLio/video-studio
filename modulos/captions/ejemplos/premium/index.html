@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Captions: premium</title>
+  <!-- Estilo de captions "premium": base sobria + línea de énfasis grande con brillo, entradas y salidas variadas con desenfoque, el bloque cambia de sitio (plantillas por zona libre) y una vez va DETRÁS de la persona (capa entre la placa y el recorte con transparencia). Módulo: assets/captions-estilos.js. Guía: modulos/captions/ESTILOS.md -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/captions-estilos.js"></script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+    video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+    .capa { position: absolute; inset: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="5.5" data-width="1080" data-height="1920">
+    <video id="placa" src="assets/persona.mp4" muted playsinline data-start="0" data-duration="5.5" data-track-index="0"></video>
+    <div id="capDetras" class="capa"></div>
+    <video id="recorte" src="assets/persona-recorte.webm" muted playsinline data-start="0" data-duration="5.5" data-track-index="1"></video>
+    <div id="capFrente" class="capa"></div>
+  </div>
+  <script>
+    // Palabras con su instante (en tu vídeo salen de npx hyperframes transcribe). tono: 'positivo' | 'problema'.
+    const GRUPOS = [
+      { t0: 0.30, t1: 1.00, ws: [{ txt: "Tu", s: 0.35 }, { txt: "IA", s: 0.55, tono: "positivo" }] },
+      { t0: 1.00, t1: 1.80, ws: [{ txt: "edita", s: 1.05 }, { txt: "el", s: 1.35 }, { txt: "vídeo,", s: 1.50, fin: true }] },
+      { t0: 1.80, t1: 2.70, ws: [{ txt: "pone", s: 1.90 }, { txt: "los", s: 2.15 }, { txt: "subtítulos", s: 2.30, tono: "positivo" }] },
+      { t0: 2.70, t1: 3.60, ws: [{ txt: "y", s: 2.80 }, { txt: "te", s: 2.95 }, { txt: "avisa", s: 3.10, tono: "positivo" }] },
+      { t0: 3.60, t1: 5.40, ws: [{ txt: "antes", s: 3.70 }, { txt: "de", s: 3.90 }, { txt: "terminar.", s: 4.10, tono: "problema", fin: true }] },
+    ];
+    // Plan: zonas libres medidas sobre fotogramas reales (la cabeza ocupa y ≈ 560–1070) y plantillas que rotan.
+    const PLAN = {
+      escenas: { S: { zonas: [[80, 1120, 1000, 1440], [80, 250, 1000, 560], [80, 1120, 1000, 1440]], tpl: ["escalon", "esparcido", "apilado"] } },
+      bloques: {
+        // la palabra "subtitulos" va detrás de la cabeza: la persona la muerde (máximo 2 por vídeo)
+        "pone los subtitulos": { detras: true, zona: [80, 300, 1000, 700], tpl: "apilado", entrada: "zoom" },
+      },
+    };
+    const bloques = CaptionsEstilos.componer(GRUPOS, { plan: PLAN });
+    const api = CaptionsEstilos.montar({ estilo: "premium", tokens: CaptionsEstilos.tokensDesdeCSS(document),
+      capaFrente: document.getElementById("capFrente"), capaDetras: document.getElementById("capDetras"), bloques });
+    const P = { t: 0 };
+    const tl = gsap.timeline({ paused: true });
+    tl.to(P, { t: 5.5, duration: 5.5, ease: "none", onUpdate: () => api.update(P.t) }, 0);
+    tl.set({}, {}, 5.5);
+    api.update(0);
+    if (document.fonts) document.fonts.ready.then(() => api.update(P.t));
+    window.__timelines = window.__timelines || {};
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>

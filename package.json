@@ -1,0 +1,21 @@
+{
+  "name": "video-edit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Estudio de vídeo que se maneja hablando con tu IA: Hyperframes + GSAP, estilos visuales para elegir en cada vídeo y módulos opcionales (personaje 3D, mundo 3D, voz, avatar, editar lo que grabas).",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"scripts/__tests__/*.test.mjs\"",
+    "entorno": "node scripts/comprobar-entorno.mjs",
+    "cuentas": "node scripts/comprobar-cuentas.mjs",
+    "nuevo": "node scripts/nuevo-proyecto.mjs",
+    "copias": "node scripts/sincronizar-copias.mjs",
+    "copias:check": "node scripts/sincronizar-copias.mjs --check"
+  },
+  "devDependencies": {
+    "hyperframes": "0.9.72"
+  }
+}

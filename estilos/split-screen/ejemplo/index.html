@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Ejemplo: pantalla partida</title>
+  <!-- Estilo "pantalla partida": tu cara arriba (mitad superior) y un panel grande abajo con el dato que estás
+       contando, sin taparte. Se usa cuando el gráfico es alto (más de ~600 px): una regla, un número, un tablero.
+       Reemplaza assets/persona.mp4 por tu grabación vertical. El fondo del panel puede llegar al borde (es fondo);
+       su CONTENIDO va dentro de la zona segura: x 80–880, y hasta 1440. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: var(--fuente-texto); color: var(--texto); background: var(--fondo); }
+    #cara { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; }
+    #cara video { width: 1080px; height: 1920px; object-fit: cover; }
+    #panel { position: absolute; left: 0; right: 0; top: 960px; height: 960px; box-sizing: border-box; padding: 44px 90px;
+      background: var(--superficie); border-top: 4px solid var(--acento); border-radius: 36px 36px 0 0;
+      box-shadow: 0 -16px 40px rgba(0,0,0,.55); overflow: hidden; opacity: 0; }
+    #panel .tit { font-family: var(--fuente-mono); font-size: 28px; letter-spacing: .12em; text-transform: uppercase; color: var(--acento); }
+    #panel h2 { margin: 14px 0 0; font-family: var(--fuente-titulos); font-weight: var(--peso-titulos); font-size: 56px; line-height: 1.05; max-width: 720px; }
+    .barras { display: flex; align-items: flex-end; gap: 36px; height: 190px; max-width: 700px; margin-top: 92px; }
+    .barra { flex: 1; position: relative; height: 100%; }
+    .barra .rel { position: absolute; left: 0; right: 0; bottom: 0; height: 100%; border-radius: 16px 16px 6px 6px; background: var(--superficie-alta); transform-origin: 50% 100%; transform: scaleY(0); }
+    .barra.gana .rel { background: linear-gradient(180deg, var(--acento), color-mix(in srgb, var(--acento) 55%, var(--fondo))); }
+    .barra .val { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--fuente-titulos); font-weight: 800; font-size: 40px; opacity: 0; }
+    .barra .eti { position: absolute; left: 0; right: 0; bottom: -40px; text-align: center; font-size: 26px; color: var(--texto-suave); }
+    .cap { position: absolute; left: 185px; width: 710px; top: 820px; text-align: center; font-family: var(--fuente-titulos); font-weight: var(--peso-titulos);
+      font-size: 70px; text-shadow: 0 3px 0 rgba(0,0,0,.55), 0 0 24px rgba(0,0,0,.6); }
+    .cap .w { display: inline-block; opacity: 0; } .cap .clave { color: var(--acento-2); }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+    <div id="cara"><video id="video-cara" src="assets/persona.mp4" muted playsinline data-start="0" data-duration="5" data-track-index="0"></video></div>
+    <div id="panel">
+      <div class="tit">Opciones</div>
+      <h2>Tu dato va aquí</h2>
+      <div class="barras">
+        <div class="barra" data-h="1.0" data-v="100"><div class="rel"></div><div class="val"></div><div class="eti">Opción A</div></div>
+        <div class="barra" data-h="0.55" data-v="55"><div class="rel"></div><div class="val"></div><div class="eti">Opción B</div></div>
+        <div class="barra gana" data-h="0.18" data-v="18"><div class="rel"></div><div class="val"></div><div class="eti">Opción C</div></div>
+      </div>
+    </div>
+    <div class="cap clip" id="cap1" data-start="0" data-duration="5" data-track-index="2"></div>
+  </div>
+  <script>
+    // Cifras de ejemplo, no medidas: cámbialas por las tuyas.
+    const tl = gsap.timeline({ paused: true });
+    const FULL = { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px)" };
+    const MITAD = { x: 0, y: -300, scale: 1, clipPath: "inset(0px 0px 660px 0px)" };   // cara centrada en la mitad de arriba
+    tl.set("#cara", FULL, 0);
+    tl.to("#cara", { ...MITAD, duration: 0.45, ease: "expo.inOut" }, 0.8);              // la cara baja 0,2 s antes del panel
+    tl.fromTo("#panel", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 1.0);
+    document.querySelectorAll(".barra").forEach((b, i) => {
+      const h = Number(b.dataset.h);
+      b.querySelector(".val").textContent = b.dataset.v;
+      b.querySelector(".val").style.bottom = `${h * 100}%`;
+      tl.to(b.querySelector(".rel"), { scaleY: h, duration: 0.7, ease: "power3.out" }, 1.5 + i * 0.25);
+      tl.to(b.querySelector(".val"), { opacity: 1, y: -12, duration: 0.3, ease: "power2.out" }, 1.9 + i * 0.25);
+    });
+    tl.to(".barra.gana .rel", { filter: "brightness(1.25)", duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 3.0);   // finito: nunca repeat -1
+    const ws = [["Mira", 1.6], ["la", 1.85], ["diferencia", 2.05, 1]];
+    document.querySelector("#cap1").innerHTML = ws.map(([w, , k]) => `<span class="w${k ? " clave" : ""}">${w}</span>`).join(" ");
+    ws.forEach(([, t], i) => tl.fromTo(`#cap1 .w:nth-child(${i + 1})`, { opacity: 0, y: 24, scale: 0.92, filter: "blur(6px)" },
+      { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, t));
+    tl.to("#cap1", { opacity: 0, y: -50, filter: "blur(10px)", duration: 0.22, ease: "power2.in" }, 3.4);
+    tl.set({}, {}, 5);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>

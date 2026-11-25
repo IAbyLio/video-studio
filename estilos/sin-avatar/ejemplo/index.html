@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Ejemplo: reel sin cara</title>
+  <!-- Estilo "reel sin cara": nadie sale a cámara; la voz en off (aquí no hay: pon la tuya como <audio> en la pista 10)
+       la sostienen tipografía cinética, tarjetas y un fondo vivo (cuadrícula que ondula, función pura de la fase).
+       Sonido por capas: cada efecto es un <audio data-capa="sfx"> con id único y data-start = momento del evento −
+       transient_offset (ver modulos/sonido/sfx/sfx-manifest.json). Así se puede renderizar por etapas
+       (node scripts/stage-render.mjs <carpeta> visual|sfx|music). -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: var(--fuente-texto); color: var(--texto); background: var(--fondo); }
+    #onda { position: absolute; inset: 0; }
+    #cam { position: absolute; inset: 0; transform-origin: 540px 860px; }
+    #halo { position: absolute; left: 140px; top: 360px; width: 800px; height: 800px; border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--acento) 30%, transparent) 0%, transparent 65%); }
+    .kicker { position: absolute; left: 185px; width: 710px; top: 430px; text-align: center; font-family: var(--fuente-mono); font-size: 30px;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--acento); opacity: 0; }
+    .slam { position: absolute; left: 140px; width: 800px; top: 490px; text-align: center; font-family: var(--fuente-titulos); font-weight: 900;
+      font-size: 190px; line-height: .95; letter-spacing: -.045em; opacity: 0;
+      background: linear-gradient(180deg, var(--texto) 30%, var(--acento) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .item { position: absolute; left: 185px; width: 710px; height: 120px; box-sizing: border-box; padding: 0 34px; display: flex; align-items: center; gap: 26px;
+      border-radius: var(--radio); background: var(--superficie); box-shadow: inset 0 0 0 2px var(--superficie-alta), 0 18px 40px rgba(0,0,0,.4);
+      font-size: 42px; font-weight: 600; opacity: 0; }
+    .item .n { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; background: var(--acento); color: var(--fondo);
+      font-family: var(--fuente-titulos); font-weight: 900; font-size: 36px; flex: none; }
+    .item.destacado .n { background: var(--acento-2); }
+    #vineta { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 45%, transparent 60%, rgba(0,0,0,.6) 100%); }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+    <canvas id="onda" class="clip" width="1080" height="1920" data-start="0" data-duration="5" data-track-index="0"></canvas>
+    <div id="cam">
+      <div id="halo"></div>
+      <div class="kicker" id="kicker">Sin grabarte</div>
+      <div class="slam" id="slam">Tu IA edita</div>
+      <div class="item" id="i1" style="top:905px"><span class="n">1</span>Corta lo que sobra</div>
+      <div class="item" id="i2" style="top:1050px"><span class="n">2</span>Pone los subtítulos</div>
+      <div class="item destacado" id="i3" style="top:1195px"><span class="n">3</span>Te pide el OK al final</div>
+    </div>
+    <div id="vineta" class="clip" data-start="0" data-duration="5" data-track-index="1"></div>
+
+    <!-- capa de efectos (data-start = evento − transient_offset 0,02 s; volumen = default_volume del manifest) -->
+    <audio id="sfx-slam" data-capa="sfx" src="assets/sfx/impacto-suave.wav" data-start="0.68" data-duration="0.92" data-track-index="40" data-volume="0.45"></audio>
+    <audio id="sfx-i1" data-capa="sfx" src="assets/sfx/swipe.wav" data-start="1.677" data-duration="0.3" data-track-index="41" data-volume="0.3"></audio>
+    <audio id="sfx-i2" data-capa="sfx" src="assets/sfx/swipe.wav" data-start="2.177" data-duration="0.3" data-track-index="42" data-volume="0.3"></audio>
+    <audio id="sfx-i3" data-capa="sfx" src="assets/sfx/pop.wav" data-start="2.68" data-duration="0.2" data-track-index="43" data-volume="0.35"></audio>
+    <audio id="sfx-salida" data-capa="sfx" src="assets/sfx/whoosh.wav" data-start="4.255" data-duration="0.64" data-track-index="44" data-volume="0.3"></audio>
+  </div>
+  <script>
+    // Fondo: cuadrícula con ondas. drawGrid(fase) es función pura: el mismo fotograma al ir adelante o atrás.
+    const cv = document.getElementById("onda"), g = cv.getContext("2d");
+    const css = getComputedStyle(document.documentElement);
+    const FONDO = css.getPropertyValue("--fondo").trim(), LINEA = css.getPropertyValue("--texto-suave").trim();
+    const STEP = 92, AMP = 16, LAM = 690;
+    function drawGrid(fase) {
+      g.fillStyle = FONDO; g.fillRect(0, 0, 1080, 1920);
+      g.strokeStyle = LINEA; g.globalAlpha = 0.16; g.lineWidth = 2;
+      for (let x = -STEP; x <= 1080 + STEP; x += STEP) {
+        g.beginPath();
+        for (let y = 0; y <= 1920; y += 24) { const dx = AMP * Math.sin((y / LAM) * 2 * Math.PI + fase); y === 0 ? g.moveTo(x + dx, y) : g.lineTo(x + dx, y); }
+        g.stroke();
+      }
+      for (let y = -STEP; y <= 1920 + STEP; y += STEP) {
+        g.beginPath();
+        for (let x = 0; x <= 1080; x += 24) { const dy = AMP * Math.sin((x / LAM) * 2 * Math.PI + fase * 0.85 + 1.3); x === 0 ? g.moveTo(x, y + dy) : g.lineTo(x, y + dy); }
+        g.stroke();
+      }
+      g.globalAlpha = 1;
+    }
+    const tl = gsap.timeline({ paused: true });
+    const F = { fase: 0 };
+    tl.to(F, { fase: Math.PI * 2, duration: 5, ease: "none", onUpdate: () => drawGrid(F.fase) }, 0);
+    drawGrid(0);
+
+    tl.fromTo("#kicker", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.2);
+    tl.fromTo("#slam", { opacity: 0, scale: 1.85, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.26, ease: "power4.in" }, 0.44);
+    tl.to("#cam", { scale: 1.06, duration: 0.3, ease: "back.out(2.4)" }, 0.7);            // golpe de cámara = mismo instante que el slam
+    tl.to("#cam", { scale: 1, duration: 0.45, ease: "power2.inOut" }, 1.2);
+    tl.fromTo("#i1", { opacity: 0, x: -120 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, 1.7);
+    tl.fromTo("#i2", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, 2.2);
+    tl.fromTo("#i3", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, 2.7);
+    tl.to("#i3", { boxShadow: "inset 0 0 0 3px var(--acento-2), 0 18px 40px rgba(0,0,0,.4)", duration: 0.3 }, 3.1);
+    tl.to("#halo", { scale: 1.12, opacity: 0.7, duration: 2.4, ease: "sine.inOut" }, 1.5);
+    tl.to(["#kicker", "#slam", ".item"], { opacity: 0, y: -120, filter: "blur(12px)", duration: 0.28, stagger: 0.04, ease: "power2.in" }, 4.3);
+    tl.set({}, {}, 5);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>

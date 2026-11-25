@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Ejemplo: mundo 3D</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <!-- Three.js vendorizado (MIT): el mundo vive en assets/world3d.js -->
+  <script type="importmap">{ "imports": { "three": "./assets/vendor/three/three.module.min.js" } }</script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: var(--texto); font-family: var(--fuente-texto); }
+    #gl { position: absolute; inset: 0; z-index: 0; }
+    /* viñeta: asienta el texto de arriba sobre el mundo */
+    #vineta { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(180deg, var(--fondo-hondo) 0%, rgba(0,0,0,0) 34%), radial-gradient(130% 80% at 50% 55%, rgba(0,0,0,0) 55%, var(--fondo-hondo) 100%); }
+    /* Texto arriba, centrado en x = 540, entre y 260 y 560 (dentro de la zona segura y del recorte del feed). */
+    .titulo { position: absolute; z-index: 2; left: 185px; width: 710px; top: 270px; text-align: center; margin: 0;
+      font-family: var(--fuente-titulos); font-weight: var(--peso-titulos); font-size: 70px; line-height: 1.05; letter-spacing: -0.02em; }
+    .paso { position: absolute; z-index: 2; left: 185px; width: 710px; top: 450px; text-align: center; font-size: 46px; font-weight: 700; }
+    .paso b { color: var(--acento); font-family: var(--fuente-mono); font-weight: 600; margin-right: 14px; }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="6" data-width="1080" data-height="1920">
+    <div id="gl" class="clip" data-start="0" data-duration="6" data-track-index="0"></div>
+    <div id="vineta" class="clip" data-start="0" data-duration="6" data-track-index="1"></div>
+    <h1 class="clip titulo" id="titulo" data-start="0" data-duration="6" data-track-index="2">Tres pasos, un solo camino</h1>
+    <div class="clip paso" id="paso1" data-start="0.8" data-duration="1.75" data-track-index="3"><b>01</b>Entiendes el problema</div>
+    <div class="clip paso" id="paso2" data-start="2.6" data-duration="1.75" data-track-index="3"><b>02</b>Pruebas una idea</div>
+    <div class="clip paso" id="paso3" data-start="4.4" data-duration="1.6" data-track-index="3"><b>03</b>Lo dejas funcionando</div>
+  </div>
+  <script>
+    (function () {
+      const DUR = 6;
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#titulo", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, 0.1);
+      // cada paso entra cuando el marcador llega a su parada (tiempos de world3d.js → RECORRIDO)
+      [["#paso1", 0.8], ["#paso2", 2.6], ["#paso3", 4.4]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 24, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "expo.out" }, t + 0.05);
+      });
+      // Proxy de tiempo del mundo 3D: GSAP es el único reloj; world3d.js expone window.__r3d(t) (función pura de t).
+      window.__P = { time: 0 };
+      tl.to(window.__P, { time: DUR, duration: DUR, ease: "none", onUpdate: function () { if (window.__r3d) window.__r3d(window.__P.time); } }, 0);
+      tl.set({}, {}, DUR);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    })();
+  </script>
+  <script type="module" src="./assets/world3d.js"></script>
+</body>
+</html>

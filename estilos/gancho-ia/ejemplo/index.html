@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Ejemplo: gancho generado con IA</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="./assets/cara.js"></script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: var(--texto); font-family: var(--fuente-texto); }
+    /* Cámara: el vídeo base y la cara viven en el MISMO contenedor, así el acercamiento los arrastra juntos. */
+    #cam { position: absolute; inset: 0; transform-origin: 470px 900px; }
+    #base { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+    #cara-host { position: absolute; inset: 0; opacity: 0; }
+    /* Viñeta superior: asienta el texto sobre el clip. */
+    #vineta { position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0) 34%); }
+    /* Texto arriba, centrado en x = 540, desde y 280 (frame 0 legible en el recorte del feed). */
+    .titular { position: absolute; left: 185px; width: 710px; top: 290px; margin: 0; text-align: center; font-family: var(--fuente-titulos);
+      font-weight: var(--peso-titulos); font-size: 76px; line-height: 1.04; letter-spacing: -0.02em; color: var(--texto);
+      text-shadow: 0 4px 18px rgba(0,0,0,0.5); }
+    .titular em { font-style: normal; color: var(--acento-2); }
+    #caps { position: absolute; left: 185px; width: 710px; top: 300px; height: 200px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center;
+      font-family: var(--fuente-titulos); font-weight: var(--peso-titulos); font-size: 68px; line-height: 1.08; text-align: center;
+      text-shadow: 0 3px 0 rgba(0,0,0,0.55), 0 0 22px rgba(0,0,0,0.6); }
+    #caps .w { display: inline-block; margin: 0 0.13em; opacity: 0; }
+    #caps .clave { color: var(--acento-2); }
+    /* Marca de "congelado": anotación discreta, como un gráfico sobre el vídeo (≥ 44 px a 1080 de ancho). */
+    #pausa { position: absolute; left: 812px; top: 1050px; font-family: var(--fuente-mono); font-size: 44px; color: var(--texto);
+      background: color-mix(in srgb, var(--fondo) 70%, transparent); padding: 10px 18px; border-radius: 14px; }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="6" data-width="1080" data-height="1920">
+    <!-- #cam sin data-start a propósito: un <video> con tiempo propio no puede ir dentro de otro elemento con tiempo -->
+    <div id="cam">
+      <!-- vídeo base = clip (gancho) + fotograma congelado repetido + desenlace. Lo arma placeholder/preparar.sh -->
+      <video id="base" src="assets/base.mp4" muted playsinline data-start="0" data-duration="6" data-track-index="1"></video>
+      <div id="cara-host"></div>
+    </div>
+    <div id="vineta" class="clip" data-start="0" data-duration="6" data-track-index="2"></div>
+    <h1 class="clip titular" id="gancho" data-start="0" data-duration="2.7" data-track-index="3">¿Esperas a ver si <em>se&nbsp;cae</em>?</h1>
+    <div id="caps" class="clip" data-start="2.7" data-duration="1.95" data-track-index="3"></div>
+    <div id="pausa" class="clip" data-start="2.6" data-duration="2" data-track-index="4">❚❚</div>
+    <h1 class="clip titular" id="remate" data-start="4.9" data-duration="1.1" data-track-index="3">Por eso, <em>anótalo</em>.</h1>
+  </div>
+  <script>
+    (function () {
+      const DUR = 6;
+      // Tiempos del vídeo base (los mismos que se pasaron a preparar.sh): se miden sobre el clip real, fotograma a fotograma.
+      const CONGELA = 2.6, HOLD = 2.0, REMATE = CONGELA + HOLD;
+
+      // ---------------------------------------------------------------- la cara del objeto en tensión
+      // Montada sobre la torre del fotograma congelado (elipse medida sobre ese fotograma) y girada como la torre.
+      // Bocas sintéticas de ejemplo; con voz real salen de scripts/personaje/build-mouth-data.mjs (Rhubarb).
+      const HABLA = 2.8;
+      const VISEMAS = "XBCDCEBACFBDCAXBCEDBAX".split("");
+      const cues = VISEMAS.map((v, i) => [+(i * 0.075).toFixed(3), v]);
+      const cara = Cara.mount(document.getElementById("cara-host"), {
+        forma: { cx: 470, cy: 880, rx: 132, ry: 152, rot: -10 },
+        cues, inicioAudio: HABLA,
+        pista: [[0, "neutral"], [CONGELA + 0.1, "sorpresa", 0.2, "pop"], [HABLA + 0.6, "duda", 0.3]],
+      });
+
+      // ---------------------------------------------------------------- captions (lo que dice el objeto)
+      const FRASE = [["Ojo,", 2.80], ["el", 3.05], ["de", 3.18], ["abajo", 3.30], ["nadie", 3.62], ["lo", 3.84], ["anotó.", 3.95]];
+      const caps = document.getElementById("caps");
+      const spans = FRASE.map(([w]) => { const s = document.createElement("span"); s.className = "w" + (w === "anotó." ? " clave" : ""); s.textContent = w; caps.appendChild(s); return s; });
+
+      const tl = gsap.timeline({ paused: true });
+      // gancho: entra en el frame 0 y se va justo al congelar
+      tl.fromTo("#gancho", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 0.05);
+      tl.to("#gancho", { opacity: 0, y: -40, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, CONGELA - 0.05);
+      // congelado: acercamiento muy lento (una imagen quieta se muere sin movimiento) + cara + marca de pausa
+      tl.fromTo("#cam", { scale: 1 }, { scale: 1.07, duration: HOLD, ease: "sine.inOut" }, CONGELA);
+      tl.fromTo("#cara-host", { opacity: 0, scale: 0.8, transformOrigin: "470px 880px" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, CONGELA + 0.05);
+      tl.fromTo("#pausa", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, CONGELA);
+      spans.forEach((s, i) => tl.fromTo(s, { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "expo.out" }, FRASE[i][1]));
+      tl.to("#caps", { opacity: 0, y: -40, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, REMATE - 0.2);
+      // descongelado: la cara se va con un soplo, zoom-out rápido y el desenlace corre; remate encima
+      tl.to("#cara-host", { opacity: 0, scale: 1.15, duration: 0.15, ease: "power2.in" }, REMATE - 0.12);
+      tl.to("#cam", { scale: 1, duration: 0.3, ease: "power3.out" }, REMATE);
+      tl.fromTo("#remate", { opacity: 0, scale: 1.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, 4.95);
+      // la cara se pinta en cada actualización (función pura de t: Cara.update)
+      const P = { t: 0 };
+      tl.to(P, { t: DUR, duration: DUR, ease: "none", onUpdate: () => cara.update(P.t) }, 0);
+      tl.set({}, {}, DUR);
+      cara.update(0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    })();
+  </script>
+</body>
+</html>

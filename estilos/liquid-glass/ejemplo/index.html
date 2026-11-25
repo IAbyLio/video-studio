@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Ejemplo: vidrio líquido</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: var(--texto); font-family: var(--fuente-texto); }
+    /* Fondo vivo: cuadrícula con ondas en canvas (función pura de la fase). El vidrio necesita algo detrás que refractar. */
+    #fondo { position: absolute; inset: 0; }
+    #fondo canvas { width: 1080px; height: 1920px; display: block; }
+    /* Capas de la librería liqui-glass (vendor/liqui-glass): efecto debajo, contenido .lqc encima. */
+    .lq { isolation: isolate; border-radius: var(--lq-radius, 30px); }
+    .lq > span { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+    .lq-backdrop, .lq-refract { z-index: 0; }
+    .lq-tint { z-index: 1; }
+    .lq-specular { z-index: 2; background-size: 100% 100%; }
+    .lq-shine { z-index: 2; box-shadow: inset 0 1.5px 1.5px rgba(255,255,255,0.85), inset 1.5px 0 1.5px 0.5px rgba(255,255,255,0.5),
+      inset -1px -1px 1px rgba(255,255,255,0.28), 0 24px 60px rgba(0,0,0,0.45); }
+    .lqc { position: relative; z-index: 3; width: 100%; height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    /* Todo centrado en x = 540 dentro de x 185–895 (zona segura de reel). Tamaño fijo en px: lo pide la librería. */
+    .titulo { position: absolute; left: 185px; width: 710px; top: 380px; margin: 0; text-align: center; font-family: var(--fuente-titulos);
+      font-weight: var(--peso-titulos); font-size: 74px; line-height: 1.04; letter-spacing: -0.02em; }
+    .item { position: absolute; left: 185px; width: 710px; height: 150px; }
+    .item .lqc { gap: 28px; padding: 0 40px; font-size: 44px; font-weight: 700; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45); }
+    .check { flex: none; width: 68px; height: 68px; border-radius: 50%; background: var(--acento); color: var(--fondo);
+      display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 800; }
+    #i1 { top: 640px; } #i2 { top: 820px; } #i3 { top: 1000px; }
+    #cta { position: absolute; left: 240px; width: 600px; height: 120px; top: 1240px; }
+    #cta .lqc { justify-content: center; gap: 18px; font-family: var(--fuente-titulos); font-weight: var(--peso-titulos); font-size: 46px; }
+    #cta .flecha { color: var(--acento-2); }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+    <div id="fondo" class="clip" data-start="0" data-duration="5" data-track-index="0"><canvas id="cv" width="1080" height="1920"></canvas></div>
+    <h1 class="clip titulo" id="titulo" data-start="0" data-duration="5" data-track-index="1">Antes de empezar, ten esto</h1>
+    <div class="clip item" id="i1" data-start="0" data-duration="5" data-track-index="2"><div class="lqc"><span class="check">✓</span>Una idea en una frase</div></div>
+    <div class="clip item" id="i2" data-start="0" data-duration="5" data-track-index="3"><div class="lqc"><span class="check">✓</span>La voz grabada</div></div>
+    <div class="clip item" id="i3" data-start="0" data-duration="5" data-track-index="4"><div class="lqc"><span class="check">✓</span>Tu marca a mano</div></div>
+    <div class="clip" id="cta" data-start="0" data-duration="5" data-track-index="5"><div class="lqc">Guárdalo <span class="flecha">→</span></div></div>
+  </div>
+  <script src="./assets/vendor/liqui-glass/liqui-glass.js"></script>
+  <script>
+    (function () {
+      const DUR = 5;
+      const css = getComputedStyle(document.documentElement);
+      const v = (n) => css.getPropertyValue(n).trim();
+      const C = { fondo: v("--fondo"), hondo: v("--fondo-hondo"), supAlta: v("--superficie-alta"), suave: v("--texto-suave"), acento: v("--acento"), acento2: v("--acento-2") };
+
+      // ---------------------------------------------------------------- cuadrícula con ondas (función pura de la fase)
+      // Cada línea se desplaza por una senoidal de su posición ortogonal + una fase global; la timeline solo anima la fase.
+      const cv = document.getElementById("cv"), g = cv.getContext("2d");
+      const STEP = 92, AMP = 16, LAM = 690;
+      // cualquier color de la marca (hex, rgb, nombre) → rgba con alfa; el canvas lo normaliza a #rrggbb
+      function conAlfa(col, a) { g.fillStyle = "#000"; g.fillStyle = col; const h = g.fillStyle;
+        if (!h.startsWith("#")) return h; const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; }
+      function dibujarFondo(fase) {
+        g.fillStyle = C.hondo; g.fillRect(0, 0, 1080, 1920);
+        // halo de acento que respira detrás de las tarjetas
+        const r = 620 + 60 * Math.sin(fase * 0.8);
+        const halo = g.createRadialGradient(540, 900, 0, 540, 900, r);
+        halo.addColorStop(0, conAlfa(C.acento, 0.33)); halo.addColorStop(1, conAlfa(C.acento, 0));
+        g.fillStyle = halo; g.fillRect(0, 0, 1080, 1920);
+        g.lineWidth = 2; g.strokeStyle = conAlfa(C.suave, 0.22);
+        for (let x0 = -STEP; x0 <= 1080 + STEP; x0 += STEP) {
+          g.beginPath();
+          for (let y = 0; y <= 1920; y += 24) { const x = x0 + AMP * Math.sin((2 * Math.PI * y) / LAM + fase); y ? g.lineTo(x, y) : g.moveTo(x, y); }
+          g.stroke();
+        }
+        for (let y0 = -STEP; y0 <= 1920 + STEP; y0 += STEP) {
+          g.beginPath();
+          for (let x = 0; x <= 1080; x += 24) { const y = y0 + AMP * Math.sin((2 * Math.PI * x) / LAM + fase * 1.13 + 0.7); x ? g.lineTo(x, y) : g.moveTo(x, y); }
+          g.stroke();
+        }
+        // tres "luces" opacas que cruzan por detrás: es lo que el bisel del vidrio curva y deja ver
+        // van por las juntas entre tarjetas (y 805, 985, 1195): pasan bajo los biseles, donde se ve la refracción, sin tapar el texto
+        [[0, 805, C.acento, 62, 400], [2.1, 985, C.acento2, 50, 400], [4.2, 1195, C.acento, 44, 300]].forEach(([d, y, col, rr, amp]) => {
+          const x = 540 + amp * Math.sin(fase * 0.5 + d);   // amplitud acotada: nunca entra en márgenes ni en la columna de botones
+          g.fillStyle = col; g.globalAlpha = 0.75; g.beginPath(); g.arc(x, y + 10 * Math.cos(fase * 0.6 + d), rr, 0, Math.PI * 2); g.fill(); g.globalAlpha = 1;
+        });
+      }
+
+      // ---------------------------------------------------------------- vidrio: se monta a t = 0 aunque esté oculto
+      // Así el mapa de refracción ya está decodificado cuando la tarjeta aparece. Nunca animar la refracción en el tiempo.
+      const LISTA = { refraction: 70, blur: 2, saturation: 1.6, tint: "rgba(255,255,255,0.15)", tintDeep: "rgba(255,255,255,0.05)", specular: 0.9 };
+      ["i1", "i2", "i3"].forEach((id) => LiquiGlass.mount(document.getElementById(id), { w: 710, h: 150, radius: 44, bezel: 36, ...LISTA }));
+      LiquiGlass.mount(document.getElementById("cta"), { w: 600, h: 120, radius: 60, bezel: 34, ...LISTA });
+
+      const P = { fase: 0 };
+      const tl = gsap.timeline({ paused: true });
+      tl.to(P, { fase: 2 * Math.PI * 1.1, duration: DUR, ease: "none", onUpdate: () => dibujarFondo(P.fase) }, 0);
+      tl.fromTo("#titulo", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.55, ease: "expo.out" }, 0.1);
+      // entradas variadas: las tres tarjetas suben escalonadas; los checks hacen pop un poco después
+      ["#i1", "#i2", "#i3"].forEach((sel, i) => {
+        const t0 = 0.55 + i * 0.45;
+        tl.fromTo(sel, { opacity: 0, y: 80, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }, t0);
+        tl.fromTo(sel + " .check", { scale: 0 }, { scale: 1, duration: 0.35, ease: "back.out(2)" }, t0 + 0.3);
+      });
+      tl.fromTo("#cta", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, 2.9);
+      tl.to("#cta .flecha", { x: 10, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 3 }, 3.5);
+      tl.set({}, {}, DUR);
+      dibujarFondo(0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    })();
+  </script>
+</body>
+</html>

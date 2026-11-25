@@ -1,0 +1,540 @@
+{
+ "_doc": "Datos del Muñeco (modulos/personaje-3d/muneco/personaje.js). Poses = rotaciones en grados (r), desplazamientos (p) y escalas (s) que se SUMAN a la postura de base de cada articulación: cuerpo, hombroI/hombroD, codoI/codoD, piernaI/piernaD (I/D = izquierda/derecha DE LA PANTALLA). En el hombro, z positivo sube el brazo derecho y z negativo sube el izquierdo. 'mira' = hacia dónde miran las pupilas [-1..1, -1..1]. 'ciclo' suma un movimiento procedural (caminar, saludar). Expresiones: formato de scripts/personaje/cara.js (ver modulos/personaje-3d/HAZ-TU-PERSONAJE.md). Para sumar una pose: copia una, cámbiale el nombre y los números, y mírala en la hoja: node modulos/personaje-3d/muneco/hacer-hoja.mjs (regenera hoja-modelo.png).",
+ "version": 1,
+ "nombre": "Muñeco",
+ "transicion": {
+  "dur": 0.3,
+  "ease": "inOut",
+  "squash": {
+   "sy": 0.08,
+   "sx": 0.06,
+   "amort": 11,
+   "frec": 30,
+   "dur": 0.34
+  }
+ },
+ "vida": {
+  "respiracion": {
+   "periodo": 3.2,
+   "amp": 0.014
+  },
+  "balanceo": 1.2,
+  "habla": {
+   "bote": 0.018,
+   "inclina": 2.2
+  },
+  "parpadeo": {
+   "inicio": 1.3,
+   "periodo": 3.0,
+   "jitter": 1.3,
+   "dur": 0.16
+  }
+ },
+ "ciclos": {
+  "caminar": {
+   "pasosPorSegundo": 2.2,
+   "pierna": 28,
+   "brazo": 22,
+   "bote": 0.03,
+   "giro": 3
+  },
+  "saludar": {
+   "frecuencia": 2.6,
+   "amplitud": 22
+  }
+ },
+ "poses": {
+  "reposo": {
+   "cuerpo": {
+    "r": [
+     0,
+     0,
+     -1
+    ]
+   }
+  },
+  "saluda": {
+   "cuerpo": {
+    "r": [
+     0,
+     0,
+     3
+    ]
+   },
+   "hombroD": {
+    "r": [
+     0,
+     0,
+     128
+    ]
+   },
+   "codoD": {
+    "r": [
+     0,
+     0,
+     20
+    ]
+   },
+   "mira": [
+    0,
+    -0.1
+   ],
+   "ciclo": "saludar"
+  },
+  "senalar-der": {
+   "cuerpo": {
+    "r": [
+     0,
+     16,
+     -3
+    ]
+   },
+   "hombroD": {
+    "r": [
+     30,
+     0,
+     100
+    ]
+   },
+   "codoD": {
+    "r": [
+     0,
+     0,
+     -4
+    ]
+   },
+   "hombroI": {
+    "r": [
+     0,
+     0,
+     6
+    ]
+   },
+   "mira": [
+    0.6,
+    -0.5
+   ]
+  },
+  "senalar-izq": {
+   "cuerpo": {
+    "r": [
+     0,
+     -16,
+     3
+    ]
+   },
+   "hombroI": {
+    "r": [
+     30,
+     0,
+     -100
+    ]
+   },
+   "codoI": {
+    "r": [
+     0,
+     0,
+     4
+    ]
+   },
+   "hombroD": {
+    "r": [
+     0,
+     0,
+     -6
+    ]
+   },
+   "mira": [
+    -0.6,
+    -0.5
+   ]
+  },
+  "pensar": {
+   "cuerpo": {
+    "r": [
+     0,
+     -6,
+     4
+    ]
+   },
+   "hombroD": {
+    "r": [
+     -55,
+     0,
+     62
+    ]
+   },
+   "codoD": {
+    "r": [
+     -70,
+     0,
+     78
+    ]
+   },
+   "mira": [
+    0.45,
+    -0.7
+   ]
+  },
+  "celebrar": {
+   "cuerpo": {
+    "r": [
+     0,
+     0,
+     0
+    ],
+    "p": [
+     0,
+     0.02,
+     0
+    ]
+   },
+   "hombroI": {
+    "r": [
+     0,
+     0,
+     -118
+    ]
+   },
+   "codoI": {
+    "r": [
+     0,
+     0,
+     -30
+    ]
+   },
+   "hombroD": {
+    "r": [
+     0,
+     0,
+     118
+    ]
+   },
+   "codoD": {
+    "r": [
+     0,
+     0,
+     30
+    ]
+   },
+   "mira": [
+    0,
+    -0.3
+   ]
+  },
+  "sorpresa": {
+   "cuerpo": {
+    "r": [
+     -6,
+     0,
+     0
+    ],
+    "s": [
+     0.97,
+     1.05,
+     0.97
+    ]
+   },
+   "hombroI": {
+    "r": [
+     0,
+     0,
+     -55
+    ]
+   },
+   "codoI": {
+    "r": [
+     0,
+     0,
+     -40
+    ]
+   },
+   "hombroD": {
+    "r": [
+     0,
+     0,
+     55
+    ]
+   },
+   "codoD": {
+    "r": [
+     0,
+     0,
+     40
+    ]
+   },
+   "mira": [
+    0,
+    -0.15
+   ]
+  },
+  "caminar": {
+   "cuerpo": {
+    "r": [
+     3,
+     0,
+     0
+    ]
+   },
+   "ciclo": "caminar"
+  }
+ },
+ "expresiones": {
+  "neutro": {
+   "L": {
+    "lidTop": 0.06,
+    "lidBot": 0,
+    "lidTilt": 0,
+    "lidBulge": 0,
+    "pupil": [
+     0,
+     0
+    ],
+    "browY": 0,
+    "browTilt": 0,
+    "browCurve": 4
+   },
+   "R": {
+    "lidTop": 0.06,
+    "lidBot": 0,
+    "lidTilt": 0,
+    "lidBulge": 0,
+    "pupil": [
+     0,
+     0
+    ],
+    "browY": 0,
+    "browTilt": 0,
+    "browCurve": 4
+   },
+   "pupilScale": 1.1,
+   "eyeScale": 1,
+   "mouth": {
+    "scale": 1,
+    "frown": -0.3,
+    "skew": 0,
+    "dy": 0
+   },
+   "idleMouth": "X"
+  },
+  "contento": {
+   "L": {
+    "lidTop": 0.04,
+    "lidBot": 0.28,
+    "lidTilt": -3,
+    "lidBulge": 0,
+    "pupil": [
+     0,
+     -0.05
+    ],
+    "browY": -10,
+    "browTilt": -4,
+    "browCurve": 8
+   },
+   "R": {
+    "lidTop": 0.04,
+    "lidBot": 0.28,
+    "lidTilt": -3,
+    "lidBulge": 0,
+    "pupil": [
+     0,
+     -0.05
+    ],
+    "browY": -10,
+    "browTilt": -4,
+    "browCurve": 8
+   },
+   "pupilScale": 1.12,
+   "eyeScale": 1,
+   "mouth": {
+    "scale": 1.08,
+    "frown": -1.4,
+    "skew": 0,
+    "dy": 0
+   },
+   "idleMouth": "X"
+  },
+  "sorpresa": {
+   "L": {
+    "lidTop": 0,
+    "lidBot": 0,
+    "lidTilt": 0,
+    "lidBulge": 0,
+    "pupil": [
+     0,
+     0
+    ],
+    "browY": -20,
+    "browTilt": -4,
+    "browCurve": 9
+   },
+   "R": {
+    "lidTop": 0,
+    "lidBot": 0,
+    "lidTilt": 0,
+    "lidBulge": 0,
+    "pupil": [
+     0,
+     0
+    ],
+    "browY": -20,
+    "browTilt": -4,
+    "browCurve": 9
+   },
+   "pupilScale": 0.8,
+   "eyeScale": 1.12,
+   "mouth": {
+    "scale": 1,
+    "frown": 0.2,
+    "skew": 0,
+    "dy": 0
+   },
+   "idleMouth": "F"
+  },
+  "duda": {
+   "L": {
+    "lidTop": 0.22,
+    "lidBot": 0.06,
+    "lidTilt": 4,
+    "lidBulge": 2,
+    "pupil": [
+     0.35,
+     -0.3
+    ],
+    "browY": 6,
+    "browTilt": 8,
+    "browCurve": 2
+   },
+   "R": {
+    "lidTop": 0.1,
+    "lidBot": 0.04,
+    "lidTilt": -2,
+    "lidBulge": 1,
+    "pupil": [
+     0.35,
+     -0.3
+    ],
+    "browY": -12,
+    "browTilt": -8,
+    "browCurve": 8
+   },
+   "pupilScale": 1.05,
+   "eyeScale": 1,
+   "mouth": {
+    "scale": 0.9,
+    "frown": 0.3,
+    "skew": -6,
+    "dy": 0
+   },
+   "idleMouth": "A"
+  },
+  "pensativo": {
+   "L": {
+    "lidTop": 0.3,
+    "lidBot": 0.05,
+    "lidTilt": 2,
+    "lidBulge": 2,
+    "pupil": [
+     0.5,
+     -0.6
+    ],
+    "browY": -4,
+    "browTilt": -6,
+    "browCurve": 5
+   },
+   "R": {
+    "lidTop": 0.3,
+    "lidBot": 0.05,
+    "lidTilt": 2,
+    "lidBulge": 2,
+    "pupil": [
+     0.5,
+     -0.6
+    ],
+    "browY": -8,
+    "browTilt": -6,
+    "browCurve": 5
+   },
+   "pupilScale": 1.05,
+   "eyeScale": 1,
+   "mouth": {
+    "scale": 0.85,
+    "frown": 0.4,
+    "skew": 4,
+    "dy": 0
+   },
+   "idleMouth": "A"
+  },
+  "guino": {
+   "L": {
+    "lidTop": 0.04,
+    "lidBot": 0.24,
+    "lidTilt": -3,
+    "lidBulge": 0,
+    "pupil": [
+     0,
+     0
+    ],
+    "browY": -8,
+    "browTilt": -4,
+    "browCurve": 7
+   },
+   "R": {
+    "lidTop": 0.92,
+    "lidBot": 0.3,
+    "lidTilt": 0,
+    "lidBulge": 4,
+    "pupil": [
+     0,
+     0
+    ],
+    "browY": 4,
+    "browTilt": 4,
+    "browCurve": 4
+   },
+   "pupilScale": 1.1,
+   "eyeScale": 1,
+   "mouth": {
+    "scale": 1.05,
+    "frown": -1.2,
+    "skew": 6,
+    "dy": 0
+   },
+   "idleMouth": "X",
+   "noBlink": true
+  }
+ },
+ "cara": {
+  "rasgos": {
+   "ojo": "caricatura",
+   "boca": "organica",
+   "iris": false,
+   "cejas": true,
+   "cierreLimpio": true,
+   "mejillas": true
+  },
+  "geometria": {
+   "ojo": {
+    "dx": 50,
+    "y": -32,
+    "rx": 27,
+    "ry": 33
+   },
+   "bocaY": 58,
+   "bocaK": 1.15,
+   "ceja": {
+    "L": 28,
+    "grosor": 9,
+    "dy": -4
+   },
+   "mejillas": {
+    "dx": 86,
+    "y": 30,
+    "rx": 22,
+    "ry": 12,
+    "o": 0.35
+   }
+  },
+  "zoom": 1.15
+ }
+}

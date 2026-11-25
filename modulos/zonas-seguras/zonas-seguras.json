@@ -1,0 +1,92 @@
+{
+  "_doc": "Fuente única de las zonas seguras por formato. La lee scripts/zonas-seguras.mjs y la explica modulos/zonas-seguras/README.md. Rectángulos en px [x, y, ancho, alto] sobre el lienzo base; para otro tamaño se escala por ancho/base.w. prohibida = ningún objeto (ni importante ni de relleno). precaucion = depende del caso. origen: 'guia' = medida que publican guías de diseño para la plataforma (2026); 'medido' = medido mirando la interfaz; 'criterio' = margen prudente propio, sin dato oficial. Las plataformas cambian su interfaz: revisalo de vez en cuando subiendo un borrador privado.",
+  "formats": {
+    "reel": {
+      "label": "Reel / TikTok / Short vertical 9:16",
+      "base": { "w": 1080, "h": 1920 },
+      "prohibida": [
+        { "name": "interfaz de arriba (pestañas, cámara, audio)", "rect": [0, 0, 1080, 220], "origen": "guia" },
+        { "name": "interfaz de abajo (usuario, texto del post, audio)", "rect": [0, 1470, 1080, 450], "origen": "guia" },
+        { "name": "margen lateral izquierdo", "rect": [0, 0, 35, 1920], "origen": "guia" },
+        { "name": "margen lateral derecho", "rect": [1045, 0, 35, 1920], "origen": "guia" },
+        { "name": "columna de botones (me gusta, comentar, compartir, guardar)", "rect": [910, 1160, 170, 310], "origen": "medido" }
+      ],
+      "precaucion": [
+        { "name": "recorte del feed y del perfil (solo primer fotograma y portada)", "rect": [0, 0, 1080, 240], "origen": "guia" },
+        { "name": "recorte del feed y del perfil (solo primer fotograma y portada)", "rect": [0, 1680, 1080, 240], "origen": "guia" }
+      ]
+    },
+    "story": {
+      "label": "Story 9:16",
+      "base": { "w": 1080, "h": 1920 },
+      "prohibida": [
+        { "name": "interfaz de arriba (barra de progreso, perfil)", "rect": [0, 0, 1080, 250], "origen": "guia" },
+        { "name": "interfaz de abajo (responder, enviar)", "rect": [0, 1670, 1080, 250], "origen": "guia" },
+        { "name": "margen lateral izquierdo", "rect": [0, 0, 35, 1920], "origen": "criterio" },
+        { "name": "margen lateral derecho", "rect": [1045, 0, 35, 1920], "origen": "criterio" }
+      ],
+      "precaucion": [
+        { "name": "banda superior (texto secundario sí, mensaje clave no)", "rect": [0, 250, 1080, 235], "origen": "medido" },
+        { "name": "banda inferior (texto secundario sí, mensaje clave no)", "rect": [0, 1435, 1080, 235], "origen": "medido" }
+      ]
+    },
+    "ad-vertical": {
+      "label": "Anuncio vertical 9:16 (reels y stories pagados)",
+      "base": { "w": 1080, "h": 1920 },
+      "prohibida": [
+        { "name": "interfaz de arriba", "rect": [0, 0, 1080, 220], "origen": "guia" },
+        { "name": "interfaz de abajo (botón del anuncio, texto)", "rect": [0, 1470, 1080, 450], "origen": "guia" },
+        { "name": "margen lateral izquierdo", "rect": [0, 0, 35, 1920], "origen": "guia" },
+        { "name": "margen lateral derecho", "rect": [1045, 0, 35, 1920], "origen": "guia" },
+        { "name": "columna de botones", "rect": [910, 1160, 170, 310], "origen": "medido" }
+      ],
+      "precaucion": [
+        { "name": "si también corre en stories: banda 220-250", "rect": [0, 220, 1080, 30], "origen": "criterio" }
+      ]
+    },
+    "post-3x4": {
+      "label": "Post o carrusel 3:4",
+      "base": { "w": 1080, "h": 1440 },
+      "prohibida": [
+        { "name": "margen superior (contador del carrusel)", "rect": [0, 0, 1080, 150], "origen": "medido" },
+        { "name": "margen inferior (etiquetas, puntos del carrusel)", "rect": [0, 1260, 1080, 180], "origen": "guia" },
+        { "name": "margen lateral izquierdo", "rect": [0, 0, 50, 1440], "origen": "guia" },
+        { "name": "margen lateral derecho", "rect": [1030, 0, 50, 1440], "origen": "guia" }
+      ],
+      "precaucion": []
+    },
+    "feed-4x5": {
+      "label": "Feed 4:5 (también anuncios de feed)",
+      "base": { "w": 1080, "h": 1350 },
+      "prohibida": [
+        { "name": "margen superior", "rect": [0, 0, 1080, 150], "origen": "criterio" },
+        { "name": "margen inferior", "rect": [0, 1170, 1080, 180], "origen": "criterio" },
+        { "name": "margen lateral izquierdo", "rect": [0, 0, 50, 1350], "origen": "criterio" },
+        { "name": "margen lateral derecho", "rect": [1030, 0, 50, 1350], "origen": "criterio" }
+      ],
+      "precaucion": []
+    },
+    "square-1x1": {
+      "label": "Cuadrado 1:1",
+      "base": { "w": 1080, "h": 1080 },
+      "prohibida": [
+        { "name": "margen superior", "rect": [0, 0, 1080, 110], "origen": "criterio" },
+        { "name": "margen inferior", "rect": [0, 945, 1080, 135], "origen": "criterio" },
+        { "name": "margen lateral izquierdo", "rect": [0, 0, 50, 1080], "origen": "criterio" },
+        { "name": "margen lateral derecho", "rect": [1030, 0, 50, 1080], "origen": "criterio" }
+      ],
+      "precaucion": []
+    },
+    "horizontal-16x9": {
+      "label": "Horizontal 16:9 (YouTube, web)",
+      "base": { "w": 1920, "h": 1080 },
+      "prohibida": [
+        { "name": "barra de controles y subtítulos del reproductor", "rect": [0, 960, 1920, 120], "origen": "criterio" },
+        { "name": "margen lateral izquierdo", "rect": [0, 0, 96, 1080], "origen": "criterio" },
+        { "name": "margen lateral derecho", "rect": [1824, 0, 96, 1080], "origen": "criterio" },
+        { "name": "margen superior (título del reproductor)", "rect": [0, 0, 1920, 54], "origen": "criterio" }
+      ],
+      "precaucion": []
+    }
+  }
+}

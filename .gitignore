@@ -1,0 +1,51 @@
+# Dependencias
+node_modules/
+
+# Claves y configuración local (nunca se suben)
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+
+# Lo que instala el onboarding desde su fuente oficial (no es parte de este repo)
+.claude/skills/hyperframes/
+.claude/skills/hyperframes-cli/
+.claude/skills/hyperframes-registry/
+.claude/skills/media-use/
+.claude/skills/gsap-*/
+.agents/skills/hyperframes*/
+.agents/skills/media-use/
+.agents/skills/gsap-*/
+skills-lock.json
+
+# Renders, fotogramas y cachés
+renders/
+**/renders/
+.hyperframes/
+**/.hyperframes/
+.cache/
+**/.thumbnails/
+**/.waveform-cache/
+*.log
+
+# Material en bruto y medios pesados de tus proyectos
+raw/
+**/raw/
+proyectos/*/bruto/
+proyectos/*/assets/media/
+
+# Tus proyectos son tuyos: si quieres versionarlos, borra esta línea
+proyectos/*
+!proyectos/_plantilla/
+
+# Intermedios de SFX generados (sfx-generate.mjs baja mp3 y lo convierte a wav)
+modulos/sonido/sfx/*.mp3
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Voz de prueba del demo del muñeco (la genera cada uno en su máquina; sin ella el demo usa bocas sintéticas)
+modulos/personaje-3d/muneco/demo/assets/voz.*
+modulos/personaje-3d/muneco/demo/assets/boca-data.js
+modulos/personaje-3d/muneco/demo/assets/boca.json

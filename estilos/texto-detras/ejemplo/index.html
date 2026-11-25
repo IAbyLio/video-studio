@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Ejemplo: texto detrás del sujeto</title>
+  <!-- Estilo "texto detrás del sujeto": una palabra gigante entre el fondo y la persona. Truco: el MISMO vídeo dos
+       veces. Abajo la grabación entera (placa); encima la palabra; encima de todo, el recorte de la persona con fondo
+       transparente. Donde está el cuerpo, el recorte tapa la palabra. Con tu grabación:
+         npx hyperframes remove-background assets/tu-video.mp4 -o assets/tu-video-recorte.webm   (local, gratis)
+       y cambia los dos src. Los dos <video> van en la raíz, con el mismo data-start y data-duration. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style id="marca">
+/* MARCA:INICIO (lo reemplaza scripts/nuevo-proyecto.mjs con marca/marca.css) */
+:root {
+  --fondo: #111318;
+  --fondo-hondo: #0a0b0e;
+  --superficie: #1b1e25;
+  --superficie-alta: #252a33;
+  --texto: #f3f1ec;
+  --texto-suave: #9aa0aa;
+  --acento: #7aa2ff;
+  --acento-2: #ffc857;
+  --negativo: #ff6b5e;
+  --fuente-titulos: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-texto: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --fuente-mono: "SF Mono", Menlo, Consolas, monospace;
+  --peso-titulos: 800;
+  --radio: 28px;
+}
+/* MARCA:FIN */
+  </style>
+  <style>
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--fondo-hondo); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: var(--fuente-texto); color: var(--texto); }
+    video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+    #placa { z-index: 0; filter: brightness(.78) saturate(.9); }
+    #recorte { z-index: 2; }
+    /* palabra protagonista: sube por encima de la frente, no sobre los ojos */
+    #heroe { position: absolute; z-index: 1; left: 90px; width: 900px; top: 380px; text-align: center; margin: 0;
+      font-family: var(--fuente-titulos); font-weight: 900; font-size: 250px; line-height: 1; letter-spacing: -.04em; transform: rotate(-2deg);
+      background: linear-gradient(180deg, var(--texto) 0%, var(--acento) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+      clip-path: inset(0 100% 0 0); }
+    /* línea de apoyo ENCIMA del sujeto, pegada al héroe */
+    #apoyo { position: absolute; z-index: 3; left: 185px; width: 710px; top: 300px; text-align: center; font-family: var(--fuente-titulos);
+      font-weight: 700; font-size: 54px; color: var(--texto); text-shadow: 0 2px 18px rgba(0,0,0,.6); opacity: 0; }
+    .cap { position: absolute; z-index: 3; left: 185px; width: 710px; top: 1180px; text-align: center; font-family: var(--fuente-titulos);
+      font-weight: var(--peso-titulos); font-size: 70px; text-shadow: 0 3px 0 rgba(0,0,0,.55), 0 0 24px rgba(0,0,0,.6); }
+    .cap .w { display: inline-block; opacity: 0; } .cap .clave { color: var(--acento-2); }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+    <video id="placa" src="assets/persona.mp4" muted playsinline data-start="0" data-duration="5" data-track-index="0"></video>
+    <h1 id="heroe" class="clip" data-start="0" data-duration="5" data-track-index="1">EDITA</h1>
+    <video id="recorte" src="assets/persona-recorte.webm" muted playsinline data-start="0" data-duration="5" data-track-index="2"></video>
+    <div id="apoyo" class="clip" data-start="0" data-duration="5" data-track-index="3">Tu IA ya</div>
+    <div class="cap clip" id="cap1" data-start="0" data-duration="5" data-track-index="4"></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#apoyo", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.4);
+    // máquina de escribir: el recorte se abre letra a letra (steps = número de letras). fromTo explícito: sin destello en el primer fotograma.
+    tl.fromTo("#heroe", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.75, ease: "steps(5)" }, 0.7);
+    tl.to("#heroe", { scale: 1.04, duration: 3.2, ease: "sine.inOut" }, 1.5);
+    const ws = [["sin", 2.1], ["que", 2.3], ["toques", 2.5, 1], ["nada", 2.85]];
+    document.querySelector("#cap1").innerHTML = ws.map(([w, , k]) => `<span class="w${k ? " clave" : ""}">${w}</span>`).join(" ");
+    ws.forEach(([, t], i) => tl.fromTo(`#cap1 .w:nth-child(${i + 1})`, { opacity: 0, y: 24, scale: 0.92, filter: "blur(6px)" },
+      { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, t));
+    tl.to("#cap1", { opacity: 0, y: -50, filter: "blur(10px)", duration: 0.22, ease: "power2.in" }, 4.4);
+    tl.set({}, {}, 5);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>
