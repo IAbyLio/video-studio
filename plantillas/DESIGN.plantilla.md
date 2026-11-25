@@ -1,6 +1,6 @@
 # DESIGN.md: identidad visual de <NOMBRE DE LA MARCA>
 
-> Lo escribe la IA en el onboarding a partir de tus archivos de marca (o de 5 preguntas si no tienes). Tú lo corriges. Es la fuente de verdad para todos los vídeos: `marca/marca.css` sale de aquí.
+> Lo escribe la IA en el onboarding a partir de tus archivos de marca (o de una propuesta hecha a partir de tu negocio, si no tienes). Tú lo corriges. Es la fuente de verdad para todos los vídeos: `marca/marca.css` sale de aquí.
 > Fuentes analizadas: <lista de archivos o URLs que se leyeron, con la fecha>
 
 ## Paleta

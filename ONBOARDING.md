@@ -184,11 +184,18 @@ Para cada cuenta que tenga:
 
 Anota en el estado qué cuentas quedaron configuradas (sí/no, nunca las claves).
 
-## Paso 5: su marca (desde sus archivos)
+## Paso 5: su marca (desde sus archivos o desde su negocio)
 
-**No le pidas que describa su marca de cero.** Pregúntale primero:
+**No le pidas que describa su marca de cero si ya la tiene en algún sitio.** Dale a elegir entre tres caminos, con esta pregunta:
 
-> "¿Tienes en tu ordenador archivos de tu marca? Por ejemplo: un manual de marca en PDF, logos, archivos de tipografías, capturas de tu web o de tus redes, piezas o vídeos anteriores. Dime en qué carpeta están (o arrástralos aquí) y los analizo yo. Si tienes web, pásame la dirección."
+> "Vamos con tu marca. ¿Cómo prefieres hacerlo?
+> 1. **Ya la tengo en mi ordenador:** dime en qué carpeta están tu manual de marca, tus logos, tus tipografías o capturas de tu web y de tus redes, y los analizo yo desde ahí.
+> 2. **Te los paso aquí:** adjunta o arrastra los archivos a esta conversación (PDF, imágenes, SVG). Si tienes web, pásame la dirección.
+> 3. **Empezamos de cero:** cuéntame a qué se dedica tu negocio y te propongo yo una identidad (colores y tipografías) para que elijas."
+
+Puede combinar caminos (por ejemplo, tiene logo pero no colores definidos): analiza lo que haya y propón lo que falte.
+
+**Si adjunta los archivos (camino 2):** guárdalos en `marca/originales/` (créala si no existe) y trabaja desde ahí igual que con una carpeta suya. Si tu herramienta no te deja guardar un adjunto en disco, analízalo desde la conversación y dile qué archivos necesitas que copie él a esa carpeta (como mínimo, el logo).
 
 **Si tiene archivos**, analízalos directamente desde ahí (sin moverlos):
 1. Lista la carpeta y cuéntale qué encontraste.
@@ -199,9 +206,14 @@ Anota en el estado qué cuentas quedaron configuradas (sí/no, nunca las claves)
 6. **Web:** si puedes leer páginas web, mira colores y fuentes de su CSS; si no, pídele una captura.
 7. **Tono:** de los textos del manual, de su web o de sus publicaciones (trato, cómo suena, palabras que usa y que no).
 
-**Si no tiene nada**, entrevístalo en **5 preguntas** (de una en una): (1) nombre de la marca y a qué se dedica; (2) a quién le habla; (3) tres adjetivos de cómo quiere que se sienta; (4) un color que le guste y uno que odie; (5) dos o tres cuentas o marcas cuya estética le gusten (solo como referencia de sensación, no para copiar). Propón una identidad mínima: fondo, superficie, texto, texto suave, acento, acento 2 y negativo con buen contraste, y una tipografía libre (Google Fonts, OFL) para títulos y otra para texto.
+**Si empieza de cero (camino 3), o no tiene nada**, parte de su negocio, con preguntas de una en una:
+1. Pídele que te describa su negocio con sus palabras: a qué se dedica, qué vende y a quién le habla. Si tiene web o perfil en redes, míralos también.
+2. Pregúntale tres adjetivos de cómo quiere que se sienta su marca, un color que le guste y uno que no quiera ver, y dos o tres cuentas o marcas cuya estética le atraiga (solo como referencia de sensación, no para copiar).
+3. Con eso, **propón tú dos o tres direcciones de diseño distintas entre sí**, pensadas para su sector y su público y para que se vean bien en vídeo vertical. Cada dirección lleva: un nombre corto, una frase de por qué encaja con su negocio, la paleta completa (fondo, superficie, texto, texto suave, acento, acento 2 y negativo, con sus hex y buen contraste) y una pareja de tipografías libres (Google Fonts, OFL): una para títulos y otra para texto. Evita las combinaciones genéricas: que cada propuesta tenga carácter.
+4. Enséñaselas de forma que las pueda comparar: como mínimo la tabla de colores y fuentes de cada una; mejor, un fotograma de prueba por dirección (mismo texto, distinta identidad) con `node scripts/nuevo-proyecto.mjs prueba-marca-a --estilo libre` y un snapshot de cada una. Borra esas pruebas al terminar.
+5. Que elija una, o que mezcle ("los colores de la primera con la letra de la segunda"). Ajusta hasta su OK.
 
-**En los dos casos:**
+**En todos los casos:**
 1. Escribe `DESIGN.md` en la raíz con la plantilla `plantillas/DESIGN.plantilla.md` (paleta con hex y su variable, tipografías, logo, tono, reglas, dónde publica, fuentes analizadas). Comprueba contraste (texto/fondo ≥ 4,5:1).
 2. **Muéstraselo** resumido (paleta, fuentes, tono) y pídele que lo corrija. Itera hasta su OK.
 3. `node scripts/marca-desde-design.mjs` → escribe `marca/marca.css` (las variables que usan todos los vídeos) y avisa de contrastes bajos o fuentes que faltan.
