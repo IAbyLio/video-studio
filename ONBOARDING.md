@@ -42,7 +42,7 @@ Hecho: este repo quedó adaptado con `AGENTS.md` como fuente única (`pasos.0_ia
 
 El repo trae archivos para varias IA (`CLAUDE.md` y `.claude/` para Claude Code; `AGENTS.md` para Codex y el resto). Este paso deja solo los de la tuya, para que nadie lea instrucciones que no son para él. Si `estado-onboarding.json` ya tiene `pasos.0_ia.hecho: true`, sáltalo.
 
-1. **La opción.** Si el prompt de instalación dice qué IA es, usa esa. Si no, identifícate: Claude Code → `claude`; Codex (app, extensión o CLI de OpenAI) → `codex`; cualquier otra con terminal (Cursor, Gemini CLI, Antigravity…) → `otra`. Si dudas, pregúntaselo a la persona.
+1. **La opción.** Si el prompt de instalación dice qué IA es, usa esa. Si no, identifícate: Claude Code → `claude`; Codex (app, extensión o CLI de OpenAI) → `codex`; cualquier otra IA agéntica con terminal (Cursor, Gemini CLI, Antigravity…) → `otra` ("Otra IA agéntica" en los prompts). Si dudas, pregúntaselo a la persona.
 2. **Node.** El script es de Node. Si `node -v` no responde, haz antes el paso 1 (instalar Node, con su OK) y vuelve aquí.
 3. **Plan en seco:** `node scripts/adaptar-ia.mjs --ia <opción> --dry-run`. Resúmele en dos líneas qué se queda y qué se quita.
 4. **Aplicar:** `node scripts/adaptar-ia.mjs --ia <opción>`. Mueve y convierte skills y agentes, borra lo de las otras IA, resuelve los bloques `<!-- IA:… -->` de los documentos y anota `agente` y `pasos.0_ia` en `estado-onboarding.json`. Repetirlo no cambia nada; con otra IA se niega. Si avisa de cambios sin guardar en archivos que tocaría, para y pregunta.
@@ -95,35 +95,36 @@ npm install
 npx hyperframes --version          # 0.9.72
 ```
 
-**Skills oficiales** (instrucciones para que sepas usar Hyperframes y GSAP), solo en esta carpeta:
+**Skills oficiales de HyperFrames y GSAP** (instrucciones para que sepas usar el motor y las animaciones), solo en esta carpeta. No vienen con `npm install`: se instalan aquí, desde su origen, el set completo de HyperFrames (9) y de GSAP (8). La lista esperada vive en `scripts/skills-oficiales.json`.
 
 <!-- IA:fuente -->
 (El paso 0 deja aquí solo el comando de tu IA: `--agent claude-code` para Claude Code, `--agent codex` para Codex y `--agent universal` para otras, que instala en `.agents/skills/`.)
 <!-- /IA -->
 <!-- IA:claude -->
 ```bash
-npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use --agent claude-code --copy -y
-npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils --agent claude-code --copy -y
+npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use figma remotion-to-hyperframes reverse-any-video slideshow style-sampling --agent claude-code --copy -y
+npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils gsap-scrolltrigger gsap-react gsap-frameworks --agent claude-code --copy -y
 ```
-- Quedan en `.claude/skills/`, junto a las de este repo. Repetir no duplica.
+- Quedan en `.claude/skills/`, junto a las 7 de este repo. Repetir no duplica.
 <!-- /IA -->
 <!-- IA:codex -->
 ```bash
-npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use --agent codex --copy -y
-npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils --agent codex --copy -y
+npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use figma remotion-to-hyperframes reverse-any-video slideshow style-sampling --agent codex --copy -y
+npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils gsap-scrolltrigger gsap-react gsap-frameworks --agent codex --copy -y
 ```
-- Quedan en `.agents/skills/`, junto a las de este repo. Repetir no duplica. Necesitan internet: Codex te pedirá aprobación.
+- Quedan en `.agents/skills/`, junto a las 7 de este repo. Repetir no duplica. Necesitan internet: Codex te pedirá aprobación.
 <!-- /IA -->
 <!-- IA:otra -->
 ```bash
-npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use --agent universal --copy -y
-npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils --agent universal --copy -y
+npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use figma remotion-to-hyperframes reverse-any-video slideshow style-sampling --agent universal --copy -y
+npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils gsap-scrolltrigger gsap-react gsap-frameworks --agent universal --copy -y
 ```
-- Quedan en `.agents/skills/` (formato estándar), junto a las de este repo. Repetir no duplica. Si tu herramienta no carga skills sola, léelas como documentación cuando haga falta.
+- Quedan en `.agents/skills/` (formato estándar), junto a las 7 de este repo. Repetir no duplica. Si tu herramienta no carga skills sola, léelas como documentación cuando haga falta.
 <!-- /IA -->
-- No instales `reverse-any-video` ni `style-sampling`: piden el plan Pro de Hyperframes.
+- **Verifica** que están todas: `node scripts/comprobar-skills.mjs`. Compara la lista esperada con la instalada; si falta alguna, imprime el comando para reinstalar solo esas: córrelo (con su OK si pide red) y vuelve a comprobar hasta que diga "todas". Anota el resultado en `2_hyperframes`.
+- `reverse-any-video` y `style-sampling` usan funciones de pago (plan Pro de HyperFrames o la nube de HeyGen): quedan instaladas, pero no las uses sin un sí explícito de la persona y el precio a la vista.
 - Las skills nuevas se cargan en la próxima sesión; para terminar este onboarding no hacen falta.
-- Hyperframes puede avisar "N HyperFrames skills out of date or missing" y sugerir `npx hyperframes skills update`: es esperable (cuenta skills que no instalamos a propósito y versiones más nuevas que la fijada). No lo corras: mantén las versiones de este paso.
+- Hyperframes puede avisar "N HyperFrames skills out of date or missing" y sugerir `npx hyperframes skills update`: es esperable (las skills se bajan de su rama principal y la CLI está fijada en 0.9.72). No lo corras: mantén lo de este paso.
 
 **Comprobación:**
 ```bash
@@ -229,4 +230,4 @@ Dile, corto:
 4. Que abra una **sesión nueva** de su IA en esta carpeta para pedir vídeos: así se cargan la guía, las skills y los agentes que dejó el paso 0.
 5. Cómo desinstalar: borrar esta carpeta. Las cachés de usuario (`~/.cache/hyperframes`: navegador de render y modelos) se borran con `npx hyperframes clean`; Node, FFmpeg y whisper, con el mismo gestor con el que se instalaron.
 
-Marca todos los pasos como hechos en `estado-onboarding.json` y anota en `pendientes` lo que haya quedado para más adelante.
+Antes de cerrar, vuelve a correr `node scripts/comprobar-skills.mjs`: tiene que decir "todas" en las del repo, HyperFrames y GSAP (si falta alguna, reinstálala con el comando que imprime). Marca todos los pasos como hechos en `estado-onboarding.json` y anota en `pendientes` lo que haya quedado para más adelante.

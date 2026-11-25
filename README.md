@@ -25,7 +25,7 @@ Para quien hace contenido (reels, shorts, stories, vídeos para su web) y quiere
 - **Codex** (app, extensión de VS Code o terminal). Preparado para Codex, sin probar de punta a punta.
 <!-- /IA -->
 <!-- IA:otra -->
-- **Una IA con acceso a la terminal que lea `AGENTS.md`.** Preparado, sin probar con tu herramienta.
+- **Una IA agéntica con acceso a la terminal que lea `AGENTS.md`.** Preparado, sin probar con tu herramienta.
 <!-- /IA -->
 - Un ordenador con macOS, Windows o Linux (probado en macOS con chip Apple).
 - Unos 2-3 GB libres para todo lo que se descarga.
@@ -41,7 +41,7 @@ Para quien hace contenido (reels, shorts, stories, vídeos para su web) y quiere
 
 ## Cómo empezar
 <!-- IA:fuente -->
-1. Elige el prompt de tu IA en [`PROMPT-INSTALACION.md`](PROMPT-INSTALACION.md) (Claude Code, Codex u otra IA con terminal) y pégaselo: clona el repo y sigue `ONBOARDING.md`.
+1. Elige el prompt de tu IA en [`PROMPT-INSTALACION.md`](PROMPT-INSTALACION.md) (Claude Code, Codex u otra IA agéntica) y pégaselo: clona el repo y sigue `ONBOARDING.md`.
 2. O hazlo a mano: `git clone https://github.com/IAbyLio/video-studio`, abre la carpeta con tu IA y dile **"Sigue ONBOARDING.md"**.
 3. El primer paso del onboarding deja la carpeta solo con los archivos de tu IA (por ejemplo, con Claude Code se queda `CLAUDE.md` y se quita `AGENTS.md`). Después te pregunta qué quieres hacer, qué cuentas tienes, dónde están tus archivos de marca y dónde publicas, y hacen juntos un primer vídeo de unos segundos.
 4. Desde ahí, en una sesión nueva dentro de la carpeta: *"Hazme un vídeo de…"*.
@@ -71,16 +71,18 @@ y escribe "Sigue ONBOARDING.md". Para ver los vídeos, abre la carpeta `proyecto
 En la app o en la extensión de VS Code, abre la carpeta como proyecto y escribe "Sigue ONBOARDING.md". En la terminal: `cd ruta/a/video-studio` y `codex`. Codex trabaja en un entorno protegido: te pedirá aprobación para los comandos que bajan cosas de internet (instalar Hyperframes, modelos). Lee qué es cada uno y acepta si estás de acuerdo.
 <!-- /IA -->
 <!-- IA:otra,fuente -->
-### Otra IA con terminal (sin probar)
-Abre la carpeta con tu herramienta y escribe "Sigue ONBOARDING.md". Las instrucciones están en `AGENTS.md`, el formato que leen la mayoría de agentes con terminal.
+### Otra IA agéntica (sin probar)
+Abre la carpeta con tu herramienta y escribe "Sigue ONBOARDING.md". Las instrucciones están en `AGENTS.md`, el formato que leen la mayoría de las IA agénticas (Cursor, Gemini CLI, Antigravity y compañía).
 <!-- /IA -->
 
 ## Qué trae
-**En números:** 2 agentes (`video-qa` revisa cada borrador; `video-orquestador`, opcional, coordina piezas largas), 2 skills propias (`nuevo-video` y `analisis-viralidad`) más 9 oficiales de Hyperframes y GSAP que instala el onboarding, 9 estilos visuales más el lienzo en blanco, y 2 estilos de captions (`natural` y `premium`).
+**En números:** 2 agentes (`video-qa` revisa cada borrador; `video-orquestador`, opcional, coordina piezas largas), 7 skills incluidas en el repo (6 propias y `website-to-hyperframes`, de HyperFrames) más 17 oficiales que instala el onboarding (9 de HyperFrames y 8 de GSAP), 9 estilos visuales más el lienzo en blanco, y 2 estilos de captions (`natural` y `premium`).
 
 | | |
 |---|---|
 | `estilos/` | 9 estilos visuales + lienzo en blanco, cada uno con ficha, ejemplo que renderiza y miniatura |
+| Skills del repo | `nuevo-video` (entrada de cada vídeo: estilo, captions, preguntas y derivación), `analisis-viralidad` (guiones y crítico), `short-form-video` (vertical con cara), `split-screen-panels` (panel alto con la cara arriba), `long-form-video` (horizontal largo), `audio-to-avatar-ad` (anuncio con avatar desde un audio) y `website-to-hyperframes` (vídeo desde una web) |
+| Skills oficiales | El set completo de HyperFrames (9) y de GSAP (8), instalado desde su origen por el onboarding y comprobado al final (`node scripts/comprobar-skills.mjs`) |
 | `modulos/captions` | Captions palabra a palabra en dos estilos a elegir por vídeo: `natural` (centradas, sobrias) o `premium` (tipografía compuesta que se reparte por la pantalla y puede ir detrás de ti) |
 | `modulos/zonas-seguras` | Para que nada quede tapado por los botones de Instagram, TikTok o YouTube |
 | `modulos/editar-lo-que-grabas` | Corta silencios, tomas repetidas y muletillas de tu grabación, y la encuadra en vertical (tú confirmas lo dudoso) |

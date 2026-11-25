@@ -1,0 +1,22 @@
+{
+  "_doc": "Fuente única de las skills oficiales que instala el onboarding (paso 2) desde su origen, con el CLI de skills fijado. La usan scripts/comprobar-skills.mjs (lista esperada contra instalada y comando para reinstalar lo que falte) y los tests, que comprueban que ONBOARDING.md instala exactamente esto. Revisado el 2026-11-25 con 'npx skills@1.5.18 add <repo> --list' y el skills-manifest.json de HyperFrames. de_pago: skills que usan funciones de pago (plan Pro de HyperFrames o la nube de HeyGen); se instalan porque son parte del set completo, pero la IA no las usa sin un sí explícito.",
+  "cli": "skills@1.5.18",
+  "fuentes": [
+    {
+      "repo": "heygen-com/hyperframes",
+      "nombre": "HyperFrames",
+      "licencia": "Apache-2.0",
+      "skills": ["hyperframes", "hyperframes-cli", "hyperframes-registry", "media-use", "figma", "remotion-to-hyperframes", "reverse-any-video", "slideshow", "style-sampling"],
+      "de_pago": ["reverse-any-video", "style-sampling"]
+    },
+    {
+      "repo": "greensock/gsap-skills",
+      "nombre": "GSAP",
+      "licencia": "MIT",
+      "skills": ["gsap-core", "gsap-timeline", "gsap-performance", "gsap-plugins", "gsap-utils", "gsap-scrolltrigger", "gsap-react", "gsap-frameworks"],
+      "de_pago": []
+    }
+  ],
+  "agente_por_ia": { "claude": "claude-code", "codex": "codex", "otra": "universal" },
+  "carpeta_por_ia": { "claude": ".claude/skills", "codex": ".agents/skills", "otra": ".agents/skills" }
+}

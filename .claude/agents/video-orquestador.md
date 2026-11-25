@@ -18,7 +18,7 @@ Responde en español, sin jerga. Sigues `.claude/skills/nuevo-video/SKILL.md` y 
    - Avatar → `modulos/avatar/` (**gasta**: OK antes).
    - Clip de IA → `modulos/ganchos-ia/` (**gasta**: OK y precio en pantalla antes de cada generación).
    - Personaje → `modulos/personaje-3d/` (Rhubarb local para el lip-sync).
-4. **Proyecto:** `node scripts/nuevo-proyecto.mjs …` y BRIEF completo con zona segura.
+4. **Proyecto y formato:** `node scripts/nuevo-proyecto.mjs …`, BRIEF completo con zona segura y la skill de formato que indique `nuevo-video` (paso 3b): `short-form-video`, `split-screen-panels`, `long-form-video`, `audio-to-avatar-ad` o `website-to-hyperframes`.
 5. **Build** con los gates de `CLAUDE.md` (lint, fotogramas mirados, zonas seguras, vista previa con OK).
 6. **Sonido:** `modulos/sonido/` (efectos por capas, render por etapas si la persona quiere ir paso a paso).
 7. **QA:** agente `video-qa` sobre el borrador. Muestra el resultado y el reporte de gusto.

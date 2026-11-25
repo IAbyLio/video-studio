@@ -11,6 +11,9 @@
 | liqui-glass (port en JavaScript de la técnica de liqui-design) | `vendor/liqui-glass/` (+ copia en el ejemplo) | github.com/leefanv/liqui-design @ 50f3871 | MIT © 2026 Fan Li, aviso en `vendor/liqui-glass/LICENSE` y origen en `NOTICE.md` |
 | Base del espacio de trabajo (contrato de render, ciclo de trabajo, estructura de proyectos) | `CLAUDE.md`, `AGENTS.md`, `proyectos/` | Deriva de hyperframes-student-kit (github.com/nateherkai/hyperframes-student-kit), a través del estudio de origen | MIT © 2026 Nate Herk (aviso abajo). No se incluye ningún asset de marca de ese kit |
 | `cara.js` (cara 2D por código), `build-mouth-data.mjs`, carril `scripts/bruto/` | `scripts/` | Estudio de origen (IAbyLio) | MIT (este repo) |
+| Skills `nuevo-video`, `analisis-viralidad`, `split-screen-panels`, `long-form-video`, `audio-to-avatar-ad` | `.claude/skills/` | Escritas para este repo a partir del método del estudio de origen (técnica, sin marca, ejemplos neutros) | MIT (este repo) |
+| Skill `short-form-video` | `.claude/skills/short-form-video/` | Deriva de la skill `short-form-video` de hyperframes-student-kit (publicada con el kit el 2026-04-18), reescrita en español y ampliada | MIT © 2026 Nate Herk (aviso arriba) + MIT de este repo para lo añadido |
+| Skill `website-to-hyperframes` | `.claude/skills/website-to-hyperframes/` | Skill del proyecto HyperFrames (HeyGen), tal como la distribuía hyperframes-student-kit; HyperFrames ya no la publica en su lista de skills (comprobado el 2026-11-25), por eso viaja en el repo | Apache-2.0, texto completo en `.claude/skills/website-to-hyperframes/LICENSE`. **Cambios:** `SKILL.md` traducido y adaptado a este repo; en las referencias (en inglés), rutas y herramientas que ya no existen sustituidas, ficha de marca renombrada a `DESIGN-sitio.md`, `fromTo` en lugar de `from`, rayas largas por guiones y una línea de procedencia al principio de cada archivo |
 
 ### Aviso MIT de hyperframes-student-kit
 ```
@@ -43,8 +46,8 @@ SOFTWARE.
 | Pieza | Cómo llega | Fuente | Licencia |
 |---|---|---|---|
 | Hyperframes CLI 0.9.72 | `npm install` (devDependency fijada) | npm `hyperframes` · github.com/heygen-com/hyperframes | Apache-2.0 |
-| Skills `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use` | `npx skills add heygen-com/hyperframes …` | github.com/heygen-com/hyperframes | Apache-2.0 |
-| Skills `gsap-core`, `gsap-timeline`, `gsap-performance`, `gsap-plugins`, `gsap-utils` | `npx skills add greensock/gsap-skills …` | github.com/greensock/gsap-skills | MIT |
+| Skills de HyperFrames (set completo, 9): `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use`, `figma`, `remotion-to-hyperframes`, `reverse-any-video`, `slideshow`, `style-sampling` | `npx skills add heygen-com/hyperframes …` (paso 2 del onboarding; lista en `scripts/skills-oficiales.json`) | github.com/heygen-com/hyperframes | Apache-2.0. `reverse-any-video` y `style-sampling` usan funciones de pago |
+| Skills de GSAP (set completo, 8): `gsap-core`, `gsap-timeline`, `gsap-performance`, `gsap-plugins`, `gsap-utils`, `gsap-scrolltrigger`, `gsap-react`, `gsap-frameworks` | `npx skills add greensock/gsap-skills …` | github.com/greensock/gsap-skills | MIT |
 | Instalador de skills (`skills` 1.5.18) | `npx` | npm `skills` | MIT |
 | GSAP 3.14.2 | CDN jsDelivr en cada `index.html` (como hace `hyperframes init`) | npm `gsap` | Licencia estándar de GreenSock/Webflow: gratis, también comercial; no es open source clásica. Prohíbe usarlo en herramientas sin código que compitan con Webflow: este repo no es eso (la IA escribe código) |
 | Navegador de render (chrome-headless-shell) | lo baja Hyperframes | Google | Términos de Google/Chromium |

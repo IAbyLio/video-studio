@@ -20,7 +20,7 @@ import { spawnSync } from 'node:child_process';
 
 const RAIZ_REPO = fileURLToPath(new URL('../', import.meta.url));
 export const IAS = ['claude', 'codex', 'otra'];
-export const NOMBRES = { claude: 'Claude Code', codex: 'Codex', otra: 'otra IA con terminal (AGENTS.md)' };
+export const NOMBRES = { claude: 'Claude Code', codex: 'Codex', otra: 'otra IA agéntica (AGENTS.md)' };
 const IDS_MARCADOR = new Set([...IAS, 'fuente']);
 export const DATOS = JSON.parse(readFileSync(join(RAIZ_REPO, 'scripts/adaptar-ia.datos.json'), 'utf8'));
 

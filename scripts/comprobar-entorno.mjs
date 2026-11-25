@@ -42,7 +42,7 @@ export function diagnostico() {
     hyperframes: {
       instalado_en_repo: existsSync(hfLocal) ? JSON.parse(readFileSync(hfLocal, 'utf8')).version : null,
       navegador_render_en_cache: existsSync(chrome),
-      skills_instaladas: ['hyperframes', 'hyperframes-cli', 'gsap-core'].every((s) => existsSync(join(RAIZ, '.claude/skills', s)) || existsSync(join(RAIZ, '.agents/skills', s))),
+      skills_instaladas: JSON.parse(readFileSync(join(RAIZ, 'scripts/skills-oficiales.json'), 'utf8')).fuentes.flatMap((f) => f.skills).every((s) => existsSync(join(RAIZ, '.claude/skills', s, 'SKILL.md')) || existsSync(join(RAIZ, '.agents/skills', s, 'SKILL.md'))),   // detalle: node scripts/comprobar-skills.mjs
     },
     opcional: {
       whisper_cli: { ok: Boolean(whisper), para: 'editar lo que grabas (transcripción por tramos)' },

@@ -15,6 +15,7 @@ import {
   leerFrontmatter, skillEstandar, agenteToml, agenteDoc, archivosGestionados,
 } from '../adaptar-ia.mjs';
 import { generar } from '../prompts-instalacion.mjs';
+import { OFICIALES, comando, comprobar } from '../comprobar-skills.mjs';
 
 const RAIZ = fileURLToPath(new URL('../../', import.meta.url));
 const FUENTE = existsSync(join(RAIZ, 'CLAUDE.md')) && existsSync(join(RAIZ, 'AGENTS.md'));
@@ -145,6 +146,13 @@ for (const ia of IAS) {
           for (const campo of ['name', 'description', 'developer_instructions']) assert.match(toml, new RegExp(`^${campo} = `, 'm'), `${n}: falta ${campo}`);
         }
       }
+      for (const n of Object.keys(DATOS.skills)) assert.ok(existsSync(join(dir, OFICIALES.carpeta_por_ia[ia], n, 'SKILL.md')), `${ia}: falta la skill ${n}`);
+      const onb = readFileSync(join(dir, 'ONBOARDING.md'), 'utf8');
+      for (const f of OFICIALES.fuentes) assert.ok(onb.includes(comando(f, ia)), `${ia}: ONBOARDING.md no instala ${f.repo} con --agent ${OFICIALES.agente_por_ia[ia]}`);
+      for (const otro of Object.values(OFICIALES.agente_por_ia).filter((a) => a !== OFICIALES.agente_por_ia[ia])) assert.doesNotMatch(onb, new RegExp(`--agent ${otro}\\b`), `${ia}: queda el comando de otra IA (${otro})`);
+      const sk = comprobar(dir, ia);
+      assert.ok(Object.values(sk.propias).every(Boolean), `${ia}: comprobar-skills no ve las skills del repo`);
+      assert.equal(sk.reinstalar.length, OFICIALES.fuentes.length, 'sin oficiales instaladas, propone reinstalar cada fuente');
       if (ia !== 'claude') {
         for (const n of Object.keys(DATOS.skills)) {
           const { campos } = leerFrontmatter(readFileSync(join(dir, `.agents/skills/${n}/SKILL.md`), 'utf8'));
@@ -198,9 +206,14 @@ test('README: el recuento de agentes, skills, estilos y captions coincide con lo
   const captions = readdirSync(join(RAIZ, 'modulos/captions/ejemplos')).filter((d) => statSync(join(RAIZ, 'modulos/captions/ejemplos', d)).isDirectory());
   const oficiales = (readFileSync(join(RAIZ, 'ONBOARDING.md'), 'utf8').match(/^npx --yes skills@[\d.]+ add .*$/gm) || [])
     .slice(0, 2).flatMap((l) => l.split('--skill ')[1].split(' --agent')[0].trim().split(/\s+/));
+  const TERCEROS = ['website-to-hyperframes'];   // incluida en el repo, pero no es propia
+  const oficialesJson = OFICIALES.fuentes.flatMap((f) => f.skills);
+  assert.deepEqual(oficiales.length ? oficiales : oficialesJson, oficialesJson, 'ONBOARDING.md instala exactamente las de scripts/skills-oficiales.json');
   assert.equal(n(/(\d+) agentes/), agentes.length, 'agentes');
-  assert.equal(n(/(\d+) skills propias/), skills.length, 'skills propias');
-  assert.equal(n(/más (\d+) oficiales/), oficiales.length, 'skills oficiales');
+  assert.equal(n(/(\d+) skills incluidas en el repo/), skills.length, 'skills incluidas en el repo');
+  assert.equal(n(/\((\d+) propias/), skills.filter((x) => !TERCEROS.includes(x)).length, 'skills propias');
+  assert.equal(n(/más (\d+) oficiales/), oficialesJson.length, 'skills oficiales');
+  for (const f of OFICIALES.fuentes) assert.match(readme, new RegExp(`${f.skills.length} de ${f.nombre}`), `${f.nombre}: número en el README`);
   assert.equal(n(/(\d+) estilos visuales/), catalogo.length, 'estilos visuales');
   assert.equal(n(/(\d+) estilos de captions/), captions.length, 'estilos de captions');
 });

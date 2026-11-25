@@ -1,6 +1,6 @@
 ---
 name: nuevo-video
-description: "Flujo completo para crear o cambiar un vídeo de este estudio: selector de estilo visual, selector de captions, cuatro preguntas, proyecto con la marca de la persona, construcción con los gates (zona segura, lint, fotogramas mirados, vista previa con OK, QA del borrador) y render final. Úsala siempre que la persona pida un vídeo, reel, short o story nuevo, o un cambio en un vídeo de proyectos/."
+description: "Puerta de entrada de cada vídeo de este estudio: selector de estilo visual, selector de captions, cuatro preguntas, derivación a la skill de formato que toque (short-form-video, split-screen-panels, long-form-video, audio-to-avatar-ad o website-to-hyperframes), proyecto con la marca de la persona, construcción con los gates (zona segura, lint, fotogramas mirados, vista previa con OK, QA del borrador) y render final. Úsala siempre que la persona pida un vídeo, reel, short o story nuevo, o un cambio en un vídeo de proyectos/."
 when_to_use: "Frases típicas: 'hazme un vídeo/reel/short/story', 'quiero un vídeo de…', 'arma un vídeo con este audio o vídeo', 'cámbiale el final al vídeo X', 'otro como el de ayer'. No usar para instalar (eso es ONBOARDING.md) ni para escribir solo un guion (skill analisis-viralidad)."
 ---
 
@@ -41,6 +41,18 @@ Puedes ver cómo es cada uno en estilos/README.md (tiene una miniatura de cada e
 
 No preguntes colores, fuentes ni tono: están en `DESIGN.md` y `marca/marca.css`. Si no existen, el onboarding no terminó el paso de marca: ofrece hacerlo (5 minutos) o seguir con la marca neutra avisando.
 
+## 3b. Skill de formato (después de las preguntas)
+Esta skill es la puerta de entrada; el método fino de cada formato vive en su propia skill. Con el estilo y las respuestas ya claros, carga la que toque y síguela junto a esta:
+
+| Si el vídeo es… | Skill |
+|---|---|
+| Vertical corto con cara o avatar (estilos `talking-head`, `texto-detras`) | `short-form-video` |
+| Vertical con un panel alto y la cara arriba (estilo `split-screen`) | `split-screen-panels` (y `short-form-video` debajo) |
+| Horizontal de más de 2 minutos (YouTube, clase, vídeo de ventas) | `long-form-video` |
+| Anuncio con el avatar de HeyGen a partir de un audio (de pago) | `audio-to-avatar-ad` |
+| A partir de una URL o una web | `website-to-hyperframes` |
+| Cualquier otro estilo (`libre`, `sin-avatar`, `pizarra-viva`, `mundo-3d`, `personaje-narrador`, `liquid-glass`, `gancho-ia`) | Su `FICHA.md` y las oficiales `hyperframes` y `gsap-core` |
+
 ## 4. Crear el proyecto
 ```bash
 node scripts/nuevo-proyecto.mjs <slug> --estilo <id> --formato <fmt> --titulo "<nombre>"
@@ -48,7 +60,7 @@ node scripts/nuevo-proyecto.mjs <slug> --estilo <id> --formato <fmt> --titulo "<
 Lee `estilos/<id>/FICHA.md` y `proyectos/<slug>/BRIEF.md`. Completa el BRIEF con lo que dijo la persona y las bandas fijas (dónde van captions, personaje, CTA) **antes** de escribir HTML. Copia al proyecto el material que te dio (a `assets/`).
 
 ## 5. Construir con los gates
-1. Lee `FILOSOFIA-MOTION.md` si no lo hiciste en esta sesión, y carga las skills `hyperframes` y `gsap`.
+1. Lee `FILOSOFIA-MOTION.md` si no lo hiciste en esta sesión, carga la skill de formato del paso 3b (si la hay) y las oficiales `hyperframes`, `gsap-core` y `gsap-timeline`.
 2. Reemplaza el contenido del ejemplo por el de la persona (textos, tiempos, material). Respeta el Render Contract de `CLAUDE.md`.
 3. Si hay voz: transcribe (`npx hyperframes transcribe … --language es --json`), corrige contra el guion y ancla cada cosa a su palabra. Si dudas de una palabra, pregunta (no puedes oír el audio).
 4. `npx hyperframes lint` → 0 errores.

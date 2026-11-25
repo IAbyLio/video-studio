@@ -9,17 +9,27 @@ node_modules/
 .claude/settings.local.json
 # /IA
 
-# Lo que instala el onboarding desde su fuente oficial (no es parte de este repo)
+# Lo que instala el onboarding desde su fuente oficial (no es parte de este repo; lista en scripts/skills-oficiales.json)
 # IA:claude,fuente
 .claude/skills/hyperframes/
 .claude/skills/hyperframes-cli/
 .claude/skills/hyperframes-registry/
 .claude/skills/media-use/
+.claude/skills/figma/
+.claude/skills/remotion-to-hyperframes/
+.claude/skills/reverse-any-video/
+.claude/skills/slideshow/
+.claude/skills/style-sampling/
 .claude/skills/gsap-*/
 # /IA
 # IA:codex,otra,fuente
 .agents/skills/hyperframes*/
 .agents/skills/media-use/
+.agents/skills/figma/
+.agents/skills/remotion-to-hyperframes/
+.agents/skills/reverse-any-video/
+.agents/skills/slideshow/
+.agents/skills/style-sampling/
 .agents/skills/gsap-*/
 # /IA
 skills-lock.json

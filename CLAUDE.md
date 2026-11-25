@@ -18,14 +18,14 @@ Un estudio de vídeo que se maneja hablando. Los vídeos se escriben como págin
 | `marca/` | `marca.css` con la identidad de la persona (la crea el onboarding); `marca.neutra.css` es la de los ejemplos |
 | `DESIGN.md` | El manual de marca de la persona, en texto (lo crea el onboarding) |
 | `scripts/` | Herramientas (Node) con tests: `npm test` |
-| `.claude/skills/` | `analisis-viralidad` (guiones), `nuevo-video` (flujo de cada vídeo) y las skills oficiales de Hyperframes y GSAP (las instala el onboarding) |
+| `.claude/skills/` | 7 del repo: `nuevo-video` (entrada de cada vídeo), `analisis-viralidad` (guiones) y las de formato `short-form-video`, `split-screen-panels`, `long-form-video`, `audio-to-avatar-ad` y `website-to-hyperframes`. Más las oficiales de HyperFrames (9) y GSAP (8), que instala el onboarding (lista en `scripts/skills-oficiales.json`, comprobación con `node scripts/comprobar-skills.mjs`) |
 | `.claude/agents/` | `video-qa` (revisión de borradores) y `video-orquestador` (opcional para piezas largas) |
 
 ## Cómo hablarle a la persona
 
 1. En español, tuteo, sin jerga. Antes de cada paso, una línea de qué vas a hacer y por qué.
 2. **Nunca le pidas que pegue una clave en el chat.** Las claves las escribe ella en `.env` (está en `.gitignore`). Para saber si están bien: `node scripts/comprobar-cuentas.mjs` (nunca imprime valores).
-3. **Pregunta antes de cualquier cosa que gaste dinero o créditos** (voz clonada, avatar, IA de vídeo, efectos generados, funciones de pago de Hyperframes como la nube o el plan Pro). Di qué vas a generar, dónde y que mire el precio en pantalla. Sin un sí explícito, no se genera.
+3. **Pregunta antes de cualquier cosa que gaste dinero o créditos** (voz clonada, avatar, IA de vídeo, efectos generados, funciones de pago de Hyperframes como la nube, el plan Pro o las skills `reverse-any-video` y `style-sampling`). Di qué vas a generar, dónde y que mire el precio en pantalla. Sin un sí explícito, no se genera.
 4. **Pregunta antes de instalar algo en el sistema.** Nada de `curl … | bash`; `sudo` solo en Linux, solo para el gestor de paquetes y explicando para qué.
 5. No recomiendes apps, planes ni servicios extra salvo que te los pida (Hyperframes anuncia su app de escritorio al renderizar: no hace falta).
 6. Si en `estado-onboarding.json` la telemetría quedó apagada, pon `DO_NOT_TRACK=1` delante de cada comando `npx`.
@@ -49,7 +49,7 @@ Un estudio de vídeo que se maneja hablando. Los vídeos se escriben como págin
 <!-- /IA -->
 <!-- IA:otra -->
 - **Esta guía es tu fuente única.** No hay otra configuración específica de tu herramienta. Escrito con cuidado pero sin probar: si algo no coincide, díselo a la persona en vez de improvisar.
-- **Skills:** `.agents/skills/<nombre>/SKILL.md`, en el formato estándar Agent Skills (agentskills.io). Si tu herramienta las carga sola, perfecto; si no, léelas como documentación cuando la tarea encaje: `nuevo-video` antes de cada vídeo y `analisis-viralidad` para guiones.
+- **Skills:** `.agents/skills/<nombre>/SKILL.md`, en el formato estándar Agent Skills (agentskills.io). Si tu herramienta las carga sola, perfecto; si no, léelas como documentación cuando la tarea encaje: `nuevo-video` antes de cada vídeo (y la skill de formato a la que derive) y `analisis-viralidad` para guiones.
 - **Agentes:** `agentes/video-qa.md` (revisión de cada borrador) y `agentes/video-orquestador.md` (piezas largas) son checklists. Si puedes lanzar subagentes, dales el archivo como instrucciones; si no, síguelos tú.
 - **Gemini CLI:** por defecto lee `GEMINI.md`, no `AGENTS.md`. Con el OK de la persona, crea `.gemini/settings.json` con `{"context": {"fileName": ["AGENTS.md"]}}` y abre una sesión nueva.
 - **Fotogramas y vista previa:** si no puedes ver imágenes o dejar un proceso en segundo plano, díselo a la persona: que mire ella los PNG y corra `npx hyperframes preview` en su terminal.
@@ -78,13 +78,15 @@ Usa la skill `nuevo-video` (`.claude/skills/nuevo-video/SKILL.md`). En resumen:
 
 **3. Cuatro preguntas** (de una en una, opciones cerradas cuando se pueda): dónde se publica (fija formato y zonas seguras), cuánto dura, qué se dice (guion, puntos o un audio) y qué material hay (vídeo, audio, imágenes). Si hay guion de reel, ofrece pasarlo por `analisis-viralidad` (y su crítico) antes de grabar o generar voz.
 
+**4. Skill de formato.** Con eso claro, `nuevo-video` deriva a la skill del formato: vertical con cara → `short-form-video`; panel alto con la cara arriba → `split-screen-panels`; horizontal de más de 2 minutos → `long-form-video`; anuncio con avatar desde un audio → `audio-to-avatar-ad`; a partir de una URL → `website-to-hyperframes`.
+
 Lo que NO preguntes: colores, fuentes ni tono. Salen de `DESIGN.md` y `marca/marca.css`.
 
 ## Flujo de un vídeo
 
 1. `node scripts/nuevo-proyecto.mjs <slug> --estilo <id> --formato <fmt>` → crea `proyectos/<slug>/` desde el ejemplo del estilo, con la marca ya puesta y un `BRIEF.md` con el bloque `## Zona segura`.
 2. Lee la `FICHA.md` del estilo y el `BRIEF.md`. Completa el brief (bandas de captions, personaje, CTA). **Sin bloque de zona segura no se escribe HTML.**
-3. Antes de componer, lee `FILOSOFIA-MOTION.md` (una idea por momento, nada quieto, transiciones con intención) y usa las skills oficiales `hyperframes` y `gsap`.
+3. Antes de componer, lee `FILOSOFIA-MOTION.md` (una idea por momento, nada quieto, transiciones con intención) y usa la skill de formato que toque y las oficiales `hyperframes`, `gsap-core` y `gsap-timeline`.
 4. Edita `proyectos/<slug>/index.html` (y `compositions/` si hace falta). Todo dentro de la carpeta del proyecto: es portable.
 5. `npx hyperframes lint` desde la carpeta del proyecto: 0 errores.
 6. **Mira antes de enseñar:** `npx hyperframes snapshot --at <tiempos> --output renders/f` y abre los PNG (herramienta de lectura de imágenes). Pásalos por `node ../../scripts/zonas-seguras.mjs renders/f/*.png --format <fmt>` y míralos: nada que no sea fondo en rojo.
@@ -152,6 +154,7 @@ Activos para esta persona: `estado-onboarding.json` → `modulos`. Si pide algo 
 
 ```bash
 npm test                                         # tests del repo
+node scripts/comprobar-skills.mjs                # skills esperadas contra instaladas (y cómo reinstalar)
 node scripts/comprobar-entorno.mjs               # qué hay instalado (sin instalar nada)
 node scripts/comprobar-cuentas.mjs [--en-linea]  # claves sin mostrarlas ni gastar
 node scripts/nuevo-proyecto.mjs --estilos        # catálogo

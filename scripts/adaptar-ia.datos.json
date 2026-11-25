@@ -6,6 +6,21 @@
     },
     "analisis-viralidad": {
       "descripcion": "Diagnosticar, reescribir y puntuar guiones, ideas, ganchos y reels para que enganchen. Úsala cuando la persona pida 'analiza esta idea/guion/reel', '¿esto puede funcionar?', 'dale un mejor gancho', 'hazlo más viral', 'reescribe este guion', 'desmonta este reel' o 'puntúa este guion', y antes de grabar o generar la voz de un vídeo con guion. Método: nichos SSDD, filtro 5-50, 5 pilares, 30 ganchos y estructura de 8 piezas. Modos: diagnóstico, transformación, solo gancho, producción (entrega guion-audio.txt y GUION-VIDEO.md) y crítico (rúbrica 0-10 para un segundo agente, umbral 8, máximo 3 rondas). No construye el vídeo (skill nuevo-video)."
+    },
+    "short-form-video": {
+      "descripcion": "Vídeo vertical corto (9:16, 10-60 s) con la cara o el avatar hablando: reels, shorts, TikTok. Úsala cuando la persona pida 'reel con mi cara y gráficos', 'short a partir de esta grabación', 'retima el vídeo tras cortar el audio' o 'la cara queda cortada', y cuando nuevo-video elige los estilos talking-head o texto-detras. Cubre el andamio de capas, los modos de la cara (completa, mitad, ventana chica), re-sincronizar tras editar el audio, ritmo de escenas, captions y la verificación con fotogramas en palabras exactas. No sirve para vídeo horizontal largo (long-form-video), panel alto con la cara arriba (split-screen-panels) ni anuncio con avatar desde un audio (audio-to-avatar-ad)."
+    },
+    "split-screen-panels": {
+      "descripcion": "Pantalla partida en 9:16: la cara arriba y un panel grande abajo (tablero de datos, tarjeta con un número o una regla, tabla, aviso) sin que uno tape al otro. Úsala cuando el gráfico principal de una escena mide más de ~600 px de alto, cuando la persona dice 'el gráfico me tapa la cara' o 'pantalla partida', o cuando nuevo-video elige el estilo split-screen. Va junto a short-form-video, que pone el andamio. Incluye los modos de la cara, el panel de la mitad inferior, la coreografía de cambios y tres variantes de panel. No sirve para chips o etiquetas chicas ni para diagramas sueltos en el centro."
+    },
+    "long-form-video": {
+      "descripcion": "Vídeo horizontal largo (1920x1080, 2-12 min): vídeos de ventas, explicaciones para YouTube, clases. Úsala cuando la persona pida 'vídeo largo', 'vídeo para YouTube', 'clase con gráficos', 'vídeo de ventas de varios minutos', o se queje de que un vídeo largo se hace pesado. Cubre estructura por tesis, 18 tipos de escena para no repetir, tarjetas que crecen por estados, tres capas de captions, la cara que se encoge y vuelve, retención y render directo de la composición. No sirve para verticales cortos (short-form-video)."
+    },
+    "audio-to-avatar-ad": {
+      "descripcion": "Anuncio vertical 9:16 desde un audio de voz con el avatar de HeyGen de la persona (de pago, con su cuenta y su OK). Úsala cuando la persona pida 'anuncio con mi avatar', 'haz que mi avatar diga este audio' o 'convierte esta nota de voz en un anuncio'. Pipeline: limpiar el audio, transcribir, render del avatar por API, escenas de apoyo con gráficos sobre cuadrícula, palabra protagonista detrás del sujeto con recorte local, captions, CTA y efectos de sonido del repo. Requiere el módulo avatar. No sirve para reels con grabación real (short-form-video) ni para vídeos largos."
+    },
+    "website-to-hyperframes": {
+      "descripcion": "Vídeo a partir de una web: la persona pasa una URL y quiere un anuncio, un recorrido de producto, una función nueva o un reel de marca ('captura esta web', 'convierte mi web en un vídeo'). Siete pasos con entregable: captura con npx hyperframes capture, ficha de marca del sitio, guion, storyboard, voz con tiempos, composiciones y validación. De HyperFrames (Apache-2.0), adaptada a este repo; referencias en inglés. Sin URL, la entrada es nuevo-video."
     }
   },
   "agentes": {
