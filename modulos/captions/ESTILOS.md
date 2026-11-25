@@ -83,7 +83,7 @@ Opciones por escena: `zona`, `zonas`, `zonaT(t, b)`, `tpl`, `entradaBase`, `entr
 
 ### Legibilidad y zonas seguras
 - Base ≥ 50 px tras escalar; si una zona obliga a escalar por debajo de ~0,75, cambia de plantilla o de zona.
-- El módulo encierra el bloque en la zona segura de reel (y 240–1460, 40 px de lado, fuera de la columna de botones); verificalo igual con `scripts/zonas-seguras.mjs` sobre el MP4.
+- El módulo encierra el bloque en la zona segura de reel (y 240–1460, 40 px de lado, fuera de la columna de botones); verifícalo igual con `scripts/zonas-seguras.mjs` sobre el MP4.
 - Sombra difusa siempre; sobre fondo claro, un degradado radial detrás.
 - Verifica sobre el MP4 renderizado, no sobre la vista previa (degradados por letra y máscaras del barrido).
 

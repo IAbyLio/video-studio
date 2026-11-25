@@ -57,4 +57,4 @@ SOFTWARE.
 | Voz local Kokoro (opcional) | `npx hyperframes tts` | Kokoro-82M | Apache-2.0 según su repo (no verificado en esta revisión) |
 
 ## Servicios de pago opcionales
-ElevenLabs, HeyGen y las plataformas de IA de vídeo se usan con la cuenta y la clave de cada persona, bajo sus términos. Lo que generes con ellas (voces, avatares, clips, efectos) se rige por esos términos: revisalos antes de publicar o redistribuir. Este repo no incluye nada generado con esas cuentas.
+ElevenLabs, HeyGen y las plataformas de IA de vídeo se usan con la cuenta y la clave de cada persona, bajo sus términos. Lo que generes con ellas (voces, avatares, clips, efectos) se rige por esos términos: revísalos antes de publicar o redistribuir. Este repo no incluye nada generado con esas cuentas.

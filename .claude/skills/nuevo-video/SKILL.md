@@ -1,6 +1,7 @@
 ---
 name: nuevo-video
-description: "Flujo de cada vídeo nuevo en este estudio: selector de estilo visual (catálogo de estilos/), selector de estilo de captions, cuatro preguntas, proyecto creado con la marca de la persona, construcción con los gates (zona segura, lint, fotogramas mirados, vista previa con OK, QA del borrador) y render final. Usar SIEMPRE que la persona pida 'hazme un vídeo/reel/short/story', 'quiero un vídeo de…', 'armame un vídeo con este audio/vídeo', o cuando quiera cambiar un vídeo existente de proyectos/. No usar para instalar (eso es ONBOARDING.md) ni para escribir solo el guion (skill analisis-viralidad)."
+description: "Flujo completo para crear o cambiar un vídeo de este estudio: selector de estilo visual, selector de captions, cuatro preguntas, proyecto con la marca de la persona, construcción con los gates (zona segura, lint, fotogramas mirados, vista previa con OK, QA del borrador) y render final. Úsala siempre que la persona pida un vídeo, reel, short o story nuevo, o un cambio en un vídeo de proyectos/."
+when_to_use: "Frases típicas: 'hazme un vídeo/reel/short/story', 'quiero un vídeo de…', 'arma un vídeo con este audio o vídeo', 'cámbiale el final al vídeo X', 'otro como el de ayer'. No usar para instalar (eso es ONBOARDING.md) ni para escribir solo un guion (skill analisis-viralidad)."
 ---
 
 # Nuevo vídeo
@@ -32,7 +33,7 @@ Puedes ver cómo es cada uno en estilos/README.md (tiene una miniatura de cada e
 - Si no los conoce, muéstrale los ejemplos: `modulos/captions/ejemplos/natural` y `…/premium` (renderizan tal cual).
 - Sin voz: no preguntes.
 
-## 3. Cuatro preguntas (de a una)
+## 3. Cuatro preguntas (de una en una)
 1. **Dónde se publica** → formato (`reel`, `story`, `ad-vertical`, `post-3x4`, `feed-4x5`, `square-1x1`, `horizontal-16x9`). Si va a dos sitios, la zona más restrictiva.
 2. **Duración** (10-20 s, 20-45 s, 45-90 s).
 3. **Qué se dice**: guion escrito, puntos sueltos, un audio suyo, o sin voz. Si es un reel con guion y la persona quiere, pasa antes por `analisis-viralidad` (guion + crítico ≥ 8).
@@ -53,7 +54,7 @@ Lee `estilos/<id>/FICHA.md` y `proyectos/<slug>/BRIEF.md`. Completa el BRIEF con
 4. `npx hyperframes lint` → 0 errores.
 5. `npx hyperframes snapshot --at <3-6 instantes clave> --output renders/f` → abre cada PNG y míralo. Pásalos por `node ../../scripts/zonas-seguras.mjs renders/f/*.png --format <fmt>` y abre los `-zs-` (nada que no sea fondo en rojo). Arregla antes de enseñar.
 6. `npx hyperframes preview` en segundo plano; pásale la dirección y dile qué mirar. Espera su OK explícito. Si no puede abrir el navegador, renderiza un borrador y dile dónde está.
-7. Borrador: `npx hyperframes render --quality draft --output renders/borrador.mp4`. Lanza el agente `video-qa` (en Claude Code) o haz su checklist a mano.
+7. Borrador: `npx hyperframes render --quality draft --output renders/borrador.mp4`. Lanza el agente `video-qa` (`.claude/agents/video-qa.md`) si puedes lanzar subagentes; si no, haz su checklist a mano.
 8. Con el OK final: `npx hyperframes render --quality standard --output renders/<slug>.mp4`. Dile la ruta, la duración y el tamaño.
 9. Cierra la vista previa.
 

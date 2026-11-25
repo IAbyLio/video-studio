@@ -9,7 +9,7 @@ Biblioteca **tuya** de vídeos ajenos que rindieron (o no), desmontados con la e
 
 ## Cómo desmontar uno (plantilla)
 ```
-### <cuenta o tema> — <fecha de medición>
+### <cuenta o tema> · <fecha de medición>
 - Rendimiento: <reproducciones> (≈ <x> veces la mediana de esa cuenta, si la conoces)
 - Duración: <s> · Palabras: <n> (≈ <n/s> palabras por segundo)
 - Transcripción: (para tu análisis privado; no se copia al guion)

@@ -32,7 +32,7 @@ personajes de series, logos). Si se te parece, cambia la silueta, no solo el col
    cabeza, un accesorio, un color, una proporción). Medidos, no "a ojo": por ejemplo "ojos a 1/3 desde arriba, cabeza
    = 1/2 del alto total".
 3. Elige la vía (punto 2) y pide una primera versión. Compara en una lámina: referencia / versión 1 / versión 2, al
-   mismo tamaño. Cambia de a una cosa por vuelta ("la cabeza de la 1, la boca de la 2").
+   mismo tamaño. Cambia una sola cosa por vuelta ("la cabeza de la 1, la boca de la 2").
 4. Pruébalo chico: a 120 px de alto sobre tu fondo de marca. Si a ese tamaño no se entiende, simplifica.
 
 Si el personaje eres tú (una versión animada tuya), los rasgos obligatorios salen de tus fotos; si vas a usar tu cara o

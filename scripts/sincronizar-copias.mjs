@@ -2,7 +2,8 @@
 // sincronizar-copias.mjs — cada ejemplo y cada proyecto tiene que ser portable (Hyperframes sirve solo su carpeta),
 // así que algunas piezas compartidas viven copiadas en varios sitios. Este script es la fuente única: copia cada
 // pieza desde su original y reinyecta la marca neutra en los ejemplos. Con --check no escribe: falla si algo se
-// desvió (lo usa un test).
+// desvió (lo usa un test). También copia el cuerpo de CLAUDE.md (desde el primer "## ") a AGENTS.md, conservando la
+// cabecera de AGENTS.md; tras el paso 0 del onboarding solo queda una de las dos guías y esa copia se salta.
 // CLI: node scripts/sincronizar-copias.mjs [--check]
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { dirname, join, resolve, relative } from 'node:path';
@@ -40,6 +41,13 @@ export const GENERADOS = [
   [`${MUNECO}/poses.json`, `${MUNECO}/demo/assets/poses-data.js`, posesAJs],
 ];
 
+/** AGENTS.md = su propia cabecera + el cuerpo de CLAUDE.md. null si falta alguna de las dos (repo ya adaptado). */
+export function guiaAgents(claude, agents) {
+  if (claude == null || agents == null) return null;
+  const corte = (t) => { const i = t.search(/^## /m); return i === -1 ? t.length : i; };
+  return agents.slice(0, corte(agents)) + claude.slice(corte(claude));
+}
+
 /** Ejemplos cuyo index.html lleva el bloque de marca neutra. */
 export function ejemplosConMarca() {
   const out = [];
@@ -68,6 +76,9 @@ function main(check) {
     if (!existsSync(r(orig)) || !existsSync(r(dirname(dirname(dest))))) continue;
     escribir(r(dest), fn(readFileSync(r(orig), 'utf8')));
   }
+  const leerSi = (p) => (existsSync(r(p)) ? readFileSync(r(p), 'utf8') : null);
+  const agents = guiaAgents(leerSi('CLAUDE.md'), leerSi('AGENTS.md'));
+  if (agents != null) escribir(r('AGENTS.md'), agents);
   const neutra = readFileSync(r('marca/marca.neutra.css'), 'utf8');
   for (const f of ejemplosConMarca()) {
     const html = readFileSync(f, 'utf8');

@@ -27,7 +27,7 @@ importa. Al lado, el contenido (tarjetas, listas, datos) aparece al ritmo de lo 
 
 ## Cómo se construye
 
-1. Voz primero: el ritmo lo manda la voz. Transcribila (`npx hyperframes transcribe voz.wav --model small --language es`)
+1. Voz primero: el ritmo lo manda la voz. Transcríbela (`npx hyperframes transcribe voz.wav --model small --language es`)
    para tener el segundo exacto de cada palabra.
 2. Bocas: `node scripts/personaje/build-mouth-data.mjs --audio voz.wav --guion guion.txt --out bocas.json --js assets/boca-data.js --var MOUTH`.
 3. Guion del personaje: poses y expresiones ancladas a palabras (`setGuion`), con la palabra en un comentario.

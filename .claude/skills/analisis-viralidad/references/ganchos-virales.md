@@ -4,7 +4,7 @@
 ## 1. Los 3 requisitos de base
 1. **Entretenido:** la gente entra a redes a buscar estímulo, no a estudiar. El "valor" sin estímulo se ignora.
 2. **Fácil de entender:** el aburrimiento nace de no entender. Lenguaje simple siempre, incluso para expertos.
-3. **Nicho SSDD:** Salud, Sexo (atracción, relaciones), Dinero, Desarrollo personal. Si tu tema no encaja directo, reenmarcalo. **Se vende lo que la gente QUIERE, no lo que necesita.**
+3. **Nicho SSDD:** Salud, Sexo (atracción, relaciones), Dinero, Desarrollo personal. Si tu tema no encaja directo, reenmárcalo. **Se vende lo que la gente QUIERE, no lo que necesita.**
 
 ## 2. Filtro 5-50 (antes de producir)
 - **Filtro del 5:** ¿lo entendería un niño de 5 años? Si cuesta procesar, se desliza. Cuidado con la maldición del conocimiento. Mal: "optimicé el pipeline con un flujo de agentes orquestados". Bien: "le enseñé a una IA cómo trabajo y ahora hace la mitad sola".

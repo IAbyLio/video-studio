@@ -1,6 +1,6 @@
 ---
 name: video-qa
-description: "Revisión visual de un borrador de vídeo de este estudio (Hyperframes). Saca los fotogramas clave del MP4, los mira de verdad, arregla los defectos objetivos (fotogramas negros por timeline corta, texto que se sale de su caja, cara cortada, escena que cae en la palabra equivocada, objeto bajo la interfaz de la plataforma, efecto de sonido mudo) en un máximo de 3 intentos re-renderizando el borrador, y reporta los defectos de gusto sin tocarlos. Usar tras cada borrador, o cuando la persona diga 'revisa el vídeo'. No usar para el render final (eso va tras el OK de la persona)."
+description: "Revisión de un borrador MP4 de este estudio: saca los fotogramas clave, los mira, arregla en hasta 3 intentos lo objetivo (fotogramas negros, texto que se sale, cara cortada, escena en la palabra equivocada, objetos bajo la interfaz de la app, efectos de sonido mudos) y reporta lo de gusto sin tocarlo. Úsalo de forma proactiva justo después de cada render de borrador, o cuando la persona diga \"revisa el vídeo\". No hace el render final."
 model: sonnet
 color: green
 ---

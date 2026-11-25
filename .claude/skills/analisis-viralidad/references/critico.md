@@ -4,7 +4,16 @@ Un agente que **NO escribió el guion** lo puntúa y obliga a rehacer. El guion 
 
 ## Cómo se orquesta (lo hace la sesión principal, no el crítico)
 1. El **escritor** entrega: guion vN con las piezas etiquetadas [1]-[8], la **hoja de hechos** y el brief (tema, formato, duración, quién narra).
-2. Se lanza un **subagente nuevo** (contexto limpio, nunca el que escribió) con el prompt de abajo, pegando guion, hoja de hechos, brief y, desde la ronda 2, la crítica anterior. En Claude Code: herramienta Agent. Sin subagentes (otro agente o sin esa herramienta): abre una sesión nueva y pegale el prompt; díselo a la persona.
+2. Se lanza un **subagente nuevo** (contexto limpio, nunca el que escribió) con el prompt de abajo, pegando guion, hoja de hechos, brief y, desde la ronda 2, la crítica anterior.
+<!-- IA:claude -->
+   Con la herramienta de agentes (Agent). Si no la tienes en esta sesión: que la persona abra una sesión nueva y le pegue el prompt; díselo.
+<!-- /IA -->
+<!-- IA:codex -->
+   Pide explícitamente un subagente para la crítica (Codex delega cuando se le pide). Si no puedes lanzarlo en esta sesión: que la persona abra una sesión nueva y le pegue el prompt; díselo.
+<!-- /IA -->
+<!-- IA:otra,fuente -->
+   Si tu IA puede lanzar subagentes, usa uno. Si no: que la persona abra una sesión nueva y le pegue el prompt; díselo.
+<!-- /IA -->
 3. `SALE` → modo producción sin más cambios.
 4. `REHACER` → el escritor aplica **todos** los obligatorios y entrega la versión siguiente.
 5. Tras la **ronda 3** sin `SALE`: no hay ronda 4. Paquete para la persona: v1, v2, v3, las tres críticas y una recomendación de una línea.
@@ -111,7 +120,7 @@ Referencia: vídeos que retienen bien rondan 2,9-3,4 palabras por segundo. Objet
 ### 6. CTA (pieza [8])
 | Nota | Ancla |
 |---|---|
-| 0-2 | No hay, o es genérico ("dale like y suscribite"), o promete la respuesta en otro vídeo |
+| 0-2 | No hay, o es genérico ("dale like y suscríbete"), o promete la respuesta en otro vídeo |
 | 5 | Doble o triple (seguir + comentar + guardar), palabra clave genérica, o no dice qué recibe |
 | 8 | Una sola acción, a los que llegaron, con lo que recibe dicho en concreto. Lo prometido existe el día de publicar |
 | 10 | Lo del 8 y la palabra clave hace callback al gancho o al remate: cierra el arco |

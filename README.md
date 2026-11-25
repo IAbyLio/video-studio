@@ -15,7 +15,18 @@ Catálogo completo: [`estilos/README.md`](estilos/README.md).
 Para quien hace contenido (reels, shorts, stories, vídeos para su web) y quiere hacerlo pidiéndolo en palabras normales, sin aprender un editor. No hace falta saber programar: la IA instala, pregunta y te muestra todo antes de renderizar.
 
 ## Qué necesitas
-- **Una IA que trabaje en tu ordenador con acceso a la terminal.** Probado con **Claude Code** (app de escritorio, extensión de VS Code o terminal). Con Codex y otros agentes debería funcionar, pero no está probado. El chat de una IA en el navegador no sirve: no puede instalar ni renderizar.
+<!-- IA:fuente -->
+- **Una IA que trabaje en tu ordenador con acceso a la terminal.** Probado con **Claude Code** (app de escritorio, extensión de VS Code o terminal). Con **Codex** y con otros agentes que leen `AGENTS.md` (Cursor, Gemini CLI, Antigravity…) está preparado pero sin probar de punta a punta. El chat de una IA en el navegador no sirve: no puede instalar ni renderizar.
+<!-- /IA -->
+<!-- IA:claude -->
+- **Claude Code** (app de escritorio, extensión de VS Code o terminal). Es con lo que está probado.
+<!-- /IA -->
+<!-- IA:codex -->
+- **Codex** (app, extensión de VS Code o terminal). Preparado para Codex, sin probar de punta a punta.
+<!-- /IA -->
+<!-- IA:otra -->
+- **Una IA con acceso a la terminal que lea `AGENTS.md`.** Preparado, sin probar con tu herramienta.
+<!-- /IA -->
 - Un ordenador con macOS, Windows o Linux (probado en macOS con chip Apple).
 - Unos 2-3 GB libres para todo lo que se descarga.
 
@@ -25,17 +36,23 @@ Para quien hace contenido (reels, shorts, stories, vídeos para su web) y quiere
 | Este repo | Gratis (licencia MIT) |
 | Hyperframes, GSAP, Three.js, FFmpeg, Node.js, whisper, Rhubarb | Gratis (código abierto o licencia gratuita) |
 | Renderizar, transcribir, recortar a la persona, lip-sync | Gratis: corre en tu ordenador |
-| **La IA que lo maneja** (Claude Code u otra) | **De pago**, aparte: un plan que la incluya o su API. Instalar y hacer cada vídeo gasta uso de tu plan |
+| **La IA que lo maneja** | **De pago**, aparte: un plan que la incluya o su API. Instalar y hacer cada vídeo gasta uso de tu plan |
 | Clon de voz (ElevenLabs), avatar (HeyGen), IA de vídeo para ganchos | **De pago y opcionales**, con tu cuenta. Tu IA te pregunta antes de cada gasto |
 
 ## Cómo empezar
-1. Clona el repo: `git clone https://github.com/IAbyLio/video-studio` (o descarga la carpeta).
-2. Ábrela con tu IA y dile: **"Sigue ONBOARDING.md"**.
-3. Responde sus preguntas: qué quieres hacer, qué cuentas tienes, dónde están tus archivos de marca y dónde publicas. Al final hacen juntos un primer vídeo de unos segundos.
-4. Desde ahí, en cualquier sesión dentro de la carpeta: *"Hazme un vídeo de…"*.
+<!-- IA:fuente -->
+1. Elige el prompt de tu IA en [`PROMPT-INSTALACION.md`](PROMPT-INSTALACION.md) (Claude Code, Codex u otra IA con terminal) y pégaselo: clona el repo y sigue `ONBOARDING.md`.
+2. O hazlo a mano: `git clone https://github.com/IAbyLio/video-studio`, abre la carpeta con tu IA y dile **"Sigue ONBOARDING.md"**.
+3. El primer paso del onboarding deja la carpeta solo con los archivos de tu IA (por ejemplo, con Claude Code se queda `CLAUDE.md` y se quita `AGENTS.md`). Después te pregunta qué quieres hacer, qué cuentas tienes, dónde están tus archivos de marca y dónde publicas, y hacen juntos un primer vídeo de unos segundos.
+4. Desde ahí, en una sesión nueva dentro de la carpeta: *"Hazme un vídeo de…"*.
+<!-- /IA -->
+<!-- IA:claude,codex,otra -->
+En una sesión de tu IA abierta en esta carpeta, pide *"Hazme un vídeo de…"*. Si el onboarding quedó a medias, dile **"Sigue ONBOARDING.md"** y retoma donde quedó.
+<!-- /IA -->
 
 Siempre te deja una **vista previa** en el navegador y te pregunta antes de hacer el vídeo final. El resultado queda en `proyectos/<nombre>/renders/`; lo subes tú.
 
+<!-- IA:claude,fuente -->
 ### Claude Code en la app de escritorio
 Abre la app, elige "abrir carpeta" (o arrastra la carpeta) y escribe "Sigue ONBOARDING.md". Cuando te pida permiso para correr un comando, lee qué es y acepta si estás de acuerdo.
 
@@ -48,25 +65,23 @@ cd ruta/a/video-studio
 claude
 ```
 y escribe "Sigue ONBOARDING.md". Para ver los vídeos, abre la carpeta `proyectos/` con el Finder o el explorador.
-
-## Instalación con tu IA
-Si prefieres que tu IA lo instale sola, pega este prompt en Claude Code (o en tu agente con terminal) y déjala seguir los pasos. Es el mismo texto que está en [`PROMPT-INSTALACION.md`](PROMPT-INSTALACION.md):
-
-```text
-Quiero instalar el estudio de vídeo "video-studio" en mi ordenador. Hazlo así:
-
-1. Clona https://github.com/IAbyLio/video-studio en una carpeta nueva (si no te digo otra, en mi carpeta de Documentos) y ábrela como carpeta de trabajo.
-2. Dentro de esa carpeta, abre ONBOARDING.md y sigue sus pasos en orden.
-3. Antes de instalar cualquier cosa en el sistema (Node, FFmpeg, whisper, etc.) explícame qué es y para qué, y espera mi OK.
-4. Nunca me pidas claves, contraseñas ni tokens por el chat: si hace falta alguna, dime que la escriba yo en el archivo .env.
-5. Pregúntame las cosas de una en una, con opciones cerradas cuando se pueda.
-```
+<!-- /IA -->
+<!-- IA:codex,fuente -->
+### Codex (sin probar de punta a punta)
+En la app o en la extensión de VS Code, abre la carpeta como proyecto y escribe "Sigue ONBOARDING.md". En la terminal: `cd ruta/a/video-studio` y `codex`. Codex trabaja en un entorno protegido: te pedirá aprobación para los comandos que bajan cosas de internet (instalar Hyperframes, modelos). Lee qué es cada uno y acepta si estás de acuerdo.
+<!-- /IA -->
+<!-- IA:otra,fuente -->
+### Otra IA con terminal (sin probar)
+Abre la carpeta con tu herramienta y escribe "Sigue ONBOARDING.md". Las instrucciones están en `AGENTS.md`, el formato que leen la mayoría de agentes con terminal.
+<!-- /IA -->
 
 ## Qué trae
+**En números:** 2 agentes (`video-qa` revisa cada borrador; `video-orquestador`, opcional, coordina piezas largas), 2 skills propias (`nuevo-video` y `analisis-viralidad`) más 9 oficiales de Hyperframes y GSAP que instala el onboarding, 9 estilos visuales más el lienzo en blanco, y 2 estilos de captions (`natural` y `premium`).
+
 | | |
 |---|---|
 | `estilos/` | 9 estilos visuales + lienzo en blanco, cada uno con ficha, ejemplo que renderiza y miniatura |
-| `modulos/captions` | Captions palabra a palabra en dos estilos a elegir por vídeo: `natural` (centradas, sobrias) o `premium` (tipografía compuesta que se reparte por la pantalla y puede ir detrás tuyo) |
+| `modulos/captions` | Captions palabra a palabra en dos estilos a elegir por vídeo: `natural` (centradas, sobrias) o `premium` (tipografía compuesta que se reparte por la pantalla y puede ir detrás de ti) |
 | `modulos/zonas-seguras` | Para que nada quede tapado por los botones de Instagram, TikTok o YouTube |
 | `modulos/editar-lo-que-grabas` | Corta silencios, tomas repetidas y muletillas de tu grabación, y la encuadra en vertical (tú confirmas lo dudoso) |
 | `modulos/personaje-3d` | Un muñeco 3D neutro que habla con lip-sync, y una guía para hacer tu propio personaje |

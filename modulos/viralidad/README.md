@@ -1,6 +1,6 @@
 # Guiones con análisis de viralidad
 
-Antes de grabar o generar voz, el guion pasa por la skill `.claude/skills/analisis-viralidad/` (Claude Code la carga sola; con otro agente, que lea su `SKILL.md`):
+Antes de grabar o generar voz, el guion pasa por la skill `.claude/skills/analisis-viralidad/` (tu IA la carga cuando la tarea encaja; si no lo hace sola, que lea su `SKILL.md`):
 
 1. **Diagnóstico** de tu idea o guion: ¿le interesa a mucha gente? ¿lo entiende alguien sin contexto? ¿tiene gancho?
 2. **Reescritura** con la estructura de 8 piezas (gancho → intro → cuerpo → bucle → cuerpo → bucle → cuerpo → llamada a la acción) y un gancho del catálogo de 30.

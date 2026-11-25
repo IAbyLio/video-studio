@@ -150,8 +150,11 @@ test('cuentas: formato sin enseñar la clave', () => {
 });
 
 // ------------------------------------------------------------------ guías para la IA
-test('AGENTS.md y CLAUDE.md dicen lo mismo (salvo la cabecera)', () => {
-  const cuerpo = (p) => leer(p).split('\n').slice(leer(p).split('\n').findIndex((l) => l.startsWith('## '))).join('\n');
+test('guías: AGENTS.md copia el cuerpo de CLAUDE.md mientras existen las dos; tras el paso 0 queda una sola', () => {
+  const hay = (p) => existsSync(join(RAIZ, p));
+  assert.ok(hay('CLAUDE.md') || hay('AGENTS.md'), 'falta la guía de la IA (CLAUDE.md o AGENTS.md)');
+  if (!(hay('CLAUDE.md') && hay('AGENTS.md'))) return;
+  const cuerpo = (p) => leer(p).slice(leer(p).search(/^## /m));
   assert.equal(cuerpo('AGENTS.md'), cuerpo('CLAUDE.md'));
 });
 

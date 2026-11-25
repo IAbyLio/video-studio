@@ -5,17 +5,23 @@ node_modules/
 .env
 .env.*
 !.env.example
+# IA:claude,fuente
 .claude/settings.local.json
+# /IA
 
 # Lo que instala el onboarding desde su fuente oficial (no es parte de este repo)
+# IA:claude,fuente
 .claude/skills/hyperframes/
 .claude/skills/hyperframes-cli/
 .claude/skills/hyperframes-registry/
 .claude/skills/media-use/
 .claude/skills/gsap-*/
+# /IA
+# IA:codex,otra,fuente
 .agents/skills/hyperframes*/
 .agents/skills/media-use/
 .agents/skills/gsap-*/
+# /IA
 skills-lock.json
 
 # Renders, fotogramas y cachés

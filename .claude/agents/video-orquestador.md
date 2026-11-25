@@ -1,6 +1,6 @@
 ---
 name: video-orquestador
-description: "Opcional, para piezas largas o con muchos pasos (guion + voz + avatar + build + sonido). Coordina el flujo de la skill nuevo-video de punta a punta: entrevista corta, selector de estilo y de captions, proyecto desde el ejemplo del estilo, guion con analisis-viralidad y su crítico, módulos que hagan falta (editar lo que grabas, voz, avatar, personaje, ganchos IA), build con gates y QA con video-qa. Para un vídeo corto normal, la sesión principal sigue la skill nuevo-video directamente, sin este agente."
+description: "Coordina de punta a punta un vídeo largo o con muchas piezas (guion + voz + avatar + grabación + build + sonido): entrevista, guion con analisis-viralidad y su crítico, módulos que hagan falta, build con gates y QA con video-qa. Úsalo solo cuando la persona pida una pieza larga o con varios materiales; para un vídeo corto normal, la sesión principal sigue la skill nuevo-video sin este agente."
 model: inherit
 color: cyan
 ---

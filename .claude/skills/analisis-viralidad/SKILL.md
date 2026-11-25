@@ -1,6 +1,7 @@
 ---
 name: analisis-viralidad
-description: "Analiza, transforma y critica guiones, ideas, reels y ganchos con los fundamentos de viralidad: nichos SSDD, filtro 5-50, 5 pilares, catálogo de 30 ganchos, regla del gancho ganado y estructura de 8 piezas. Diagnostica por qué una pieza no engancha y la reescribe en la voz de la persona (DESIGN.md → Tono). Incluye modo producción (gate 'si pasa, no se toca' + entregables guion-audio.txt y GUION-VIDEO.md) y modo crítico (rúbrica 0-10 de 6 dimensiones para un segundo agente, umbral 8, máximo 3 rondas). Invocar cuando se pida 'analiza esta idea/guion/reel', '¿esto puede funcionar/viralizar?', 'dale un mejor gancho', 'hazlo más viral', 'reescribe este guion', 'desmonta este reel', 'critica/puntúa este guion', o antes de generar la voz de un vídeo con guion. No construye el vídeo: entrega diagnóstico, guion o nota."
+description: "Diagnostica, reescribe y puntúa guiones, ideas, ganchos y reels para que enganchen, con nichos SSDD, filtro 5-50, 5 pilares, catálogo de 30 ganchos y estructura de 8 piezas. Modos: diagnóstico, transformación, solo gancho, producción (entrega guion-audio.txt y GUION-VIDEO.md) y crítico (rúbrica 0-10 para un segundo agente, umbral 8, máximo 3 rondas). Úsala antes de grabar o generar la voz de un vídeo con guion, o cuando la persona pida analizar, mejorar o puntuar un guion o un gancho."
+when_to_use: "Frases típicas: 'analiza esta idea/guion/reel', '¿esto puede funcionar?', 'dale un mejor gancho', 'hazlo más viral', 'reescribe este guion', 'desmonta este reel', 'critica/puntúa este guion'. No construye el vídeo (skill nuevo-video) ni genera la voz."
 ---
 
 # Análisis de viralidad: diagnóstico y transformación de contenido

@@ -22,7 +22,7 @@ No cierres con un consejo genérico ("revisa el resultado"). Da los pasos, habla
 - **Personifica la herramienta sin acusarla de mala fe.** El enemigo es el pedido mal hecho: "la IA te miente" → "la IA no te miente: hace exactamente lo que le pediste, y ese es el problema".
 
 ## Bucles
-- **Cada pieza cierra su propio bucle.** Nada de "te lo cuento en el próximo vídeo, seguime". Si el bucle no se puede cerrar dentro del vídeo, se quita.
+- **Cada pieza cierra su propio bucle.** Nada de "te lo cuento en el próximo vídeo, sígueme". Si el bucle no se puede cerrar dentro del vídeo, se quita.
 
 ## Remate
 - **Callback a la metáfora, sin culpar a la herramienta y devolviendo la responsabilidad con suavidad.** "No te quería ignorar. Era tu pedido el que necesitaba ser más claro."

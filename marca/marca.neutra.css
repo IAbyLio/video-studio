@@ -1,7 +1,7 @@
 /* marca.neutra.css — identidad NEUTRA de ejemplo. No es la marca de nadie: es el punto de partida de los ejemplos.
    El onboarding crea marca/marca.css con TU identidad (sale de tu manual de marca, ver DESIGN.md) y
    scripts/nuevo-proyecto.mjs la mete en cada proyecto nuevo. Mismas variables, otros valores.
-   Fuentes propias: declaralas aquí con @font-face y url("fuentes/<archivo>.woff2") (archivos en marca/fuentes/);
+   Fuentes propias: decláralas aquí con @font-face y url("fuentes/<archivo>.woff2") (archivos en marca/fuentes/);
    el script las copia al proyecto. Hyperframes solo embebe fuentes declaradas en el <style> del index.html,
    por eso este bloque va inline y no como <link>. */
 :root {

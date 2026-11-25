@@ -1,22 +1,66 @@
 # ONBOARDING: instrucciones para tu IA
 
-> **Para la persona:** abre esta carpeta con tu IA (Claude Code en la app de escritorio, en VS Code o en la terminal) y dile: **"Sigue ONBOARDING.md"**. Te va a hacer preguntas cortas y te va a pedir permiso antes de instalar o gastar nada.
+> **Para la persona:** abre esta carpeta con tu IA y dile: **"Sigue ONBOARDING.md"** (o pégale el prompt de instalación de tu IA). Te va a hacer preguntas cortas y te va a pedir permiso antes de instalar o gastar nada.
 >
-> **Para la IA:** estas son tus instrucciones. Seguilas en orden. Probado con Claude Code en macOS (Apple Silicon). Con Codex u otros agentes con terminal, en Windows o en Linux, está escrito con cuidado pero sin probar: si algo no coincide (un comando, una herramienta que no tienes), díselo a la persona en vez de improvisar.
+<!-- IA:fuente -->
+> **Para la IA:** estas son tus instrucciones. Síguelas en orden, empezando por el paso 0, que deja el repo solo con los archivos de tu IA. Probado con Claude Code en macOS (Apple Silicon). Con Codex u otros agentes con terminal, en Windows o en Linux, está escrito con cuidado pero sin probar: si algo no coincide (un comando, una herramienta que no tienes), díselo a la persona en vez de improvisar.
+<!-- /IA -->
+<!-- IA:claude -->
+> **Para la IA:** estas son tus instrucciones. Síguelas en orden. Probado con Claude Code en macOS (Apple Silicon). En Windows o en Linux está escrito con cuidado pero sin probar: si algo no coincide (un comando, una herramienta que no tienes), díselo a la persona en vez de improvisar.
+<!-- /IA -->
+<!-- IA:codex -->
+> **Para la IA:** estas son tus instrucciones. Síguelas en orden. Con Codex, y en Windows o Linux, está escrito con cuidado pero sin probar de punta a punta: si algo no coincide (un comando, una herramienta que no tienes, un permiso del sandbox), díselo a la persona en vez de improvisar.
+<!-- /IA -->
+<!-- IA:otra -->
+> **Para la IA:** estas son tus instrucciones. Síguelas en orden. Con tu herramienta está escrito con cuidado pero sin probar: si algo no coincide (un comando, una herramienta que no tienes), díselo a la persona en vez de improvisar.
+<!-- /IA -->
 
 ## Reglas (no negociables)
 
-1. **Español, tuteo, sin jerga.** Antes de cada paso, una línea de qué vas a hacer y por qué. Preguntas de a una, con opciones cerradas cuando se pueda.
+1. **Español, tuteo, sin jerga.** Antes de cada paso, una línea de qué vas a hacer y por qué. Preguntas de una en una, con opciones cerradas cuando se pueda.
 2. **Nunca pidas claves, contraseñas ni tokens en el chat.** Si hace falta una clave, la persona la escribe en `.env` (copia de `.env.example`, ignorada por git) con su editor. Tú solo compruebas con `node scripts/comprobar-cuentas.mjs`, que nunca muestra valores.
 3. **Pide confirmación antes de instalar algo en el sistema** (Node, FFmpeg, whisper, Rosetta). Lo demás queda dentro de esta carpeta o en cachés de usuario (`~/.cache/hyperframes`).
 4. **Nada de `curl … | bash` ni scripts bajados a ciegas.** Solo los comandos de este archivo, el gestor de paquetes oficial del sistema o los scripts de este repo (que puedes leer antes).
 5. **`sudo` solo en Linux, solo para el gestor de paquetes, explicando antes para qué.** En macOS y Windows no hace falta.
 6. **No gastes nada sin un sí explícito.** Hyperframes tiene funciones de pago (nube, plan Pro, plantillas Pro, `--describe` con Gemini): no hacen falta. ElevenLabs, HeyGen y las IAs de vídeo gastan créditos de la persona: en este onboarding solo se comprueban en seco.
-7. **Idempotente:** si un paso ya está hecho, lo compruebas y sigues. Lleva el estado en `estado-onboarding.json` (raíz): si no existe, cópialo de `plantillas/estado-onboarding.plantilla.json` y actualizalo al cerrar cada paso. Si existe, retoma desde el primer paso con `"hecho": false`.
+7. **Idempotente:** si un paso ya está hecho, lo compruebas y sigues. Lleva el estado en `estado-onboarding.json` (raíz): lo crea el paso 0 (si no existe, cópialo de `plantillas/estado-onboarding.plantilla.json`) y lo actualizas al cerrar cada paso. Si existe, retoma desde el primer paso con `"hecho": false`.
 8. Si un paso falla dos veces, para, muestra el error y propón qué hacer.
 9. Tu agente te va a pedir permiso para correr comandos: avísale a la persona que es normal y que lea lo que aprueba.
 
-## Paso 0: presentarte (una vez)
+## Paso 0: qué IA eres
+
+<!-- IA:claude -->
+Hecho: este repo quedó adaptado para Claude Code (`pasos.0_ia` en `estado-onboarding.json`). Si `node scripts/adaptar-ia.mjs --ia claude --dry-run` dice "Nada que hacer", sigue con el paso 1.
+<!-- /IA -->
+<!-- IA:codex -->
+Hecho: este repo quedó adaptado para Codex (`pasos.0_ia` en `estado-onboarding.json`). Si `node scripts/adaptar-ia.mjs --ia codex --dry-run` dice "Nada que hacer", sigue con el paso 1.
+<!-- /IA -->
+<!-- IA:otra -->
+Hecho: este repo quedó adaptado con `AGENTS.md` como fuente única (`pasos.0_ia` en `estado-onboarding.json`). Si `node scripts/adaptar-ia.mjs --ia otra --dry-run` dice "Nada que hacer", sigue con el paso 1.
+<!-- /IA -->
+<!-- IA:fuente -->
+
+El repo trae archivos para varias IA (`CLAUDE.md` y `.claude/` para Claude Code; `AGENTS.md` para Codex y el resto). Este paso deja solo los de la tuya, para que nadie lea instrucciones que no son para él. Si `estado-onboarding.json` ya tiene `pasos.0_ia.hecho: true`, sáltalo.
+
+1. **La opción.** Si el prompt de instalación dice qué IA es, usa esa. Si no, identifícate: Claude Code → `claude`; Codex (app, extensión o CLI de OpenAI) → `codex`; cualquier otra con terminal (Cursor, Gemini CLI, Antigravity…) → `otra`. Si dudas, pregúntaselo a la persona.
+2. **Node.** El script es de Node. Si `node -v` no responde, haz antes el paso 1 (instalar Node, con su OK) y vuelve aquí.
+3. **Plan en seco:** `node scripts/adaptar-ia.mjs --ia <opción> --dry-run`. Resúmele en dos líneas qué se queda y qué se quita.
+4. **Aplicar:** `node scripts/adaptar-ia.mjs --ia <opción>`. Mueve y convierte skills y agentes, borra lo de las otras IA, resuelve los bloques `<!-- IA:… -->` de los documentos y anota `agente` y `pasos.0_ia` en `estado-onboarding.json`. Repetirlo no cambia nada; con otra IA se niega. Si avisa de cambios sin guardar en archivos que tocaría, para y pregunta.
+
+   | Opción | Se queda | Se quita |
+   |---|---|---|
+   | `claude` | `CLAUDE.md`, `.claude/skills/`, `.claude/agents/` | `AGENTS.md` |
+   | `codex` | `AGENTS.md` con cabecera de Codex; skills en `.agents/skills/` (formato Agent Skills, descripción para Codex); agentes como custom agents en `.codex/agents/*.toml` | `CLAUDE.md`, `.claude/` |
+   | `otra` | `AGENTS.md` como fuente única; skills en `.agents/skills/` (formato estándar); agentes como checklists en `agentes/` | `CLAUDE.md`, `.claude/` |
+
+   En las tres se borran los prompts de instalación (`PROMPT-INSTALACION.md`, `prompts/`): solo sirven antes de clonar.
+5. **Lo que el script no hace (redacción fina).** Si el script lista algo en "Para revisar a mano", corrígelo en esos archivos (son menciones de otras IA que no supo resolver). Después lee una vez la guía que quedó (`CLAUDE.md` o `AGENTS.md`) y confirma que se entiende sola. No cambies las reglas ni el flujo: solo redacción.
+6. **Sesión nueva al final.** Tu IA lee la guía, las skills y los agentes al empezar la sesión: los que acaba de dejar el script se cargan en la próxima. Para seguir con este onboarding no hacen falta (lee los archivos directamente). En el cierre, recuérdale a la persona que abra una sesión nueva en esta carpeta.
+
+Para cambiar de IA más adelante, lo más simple es clonar el repo de nuevo en otra carpeta y copiar `DESIGN.md`, `marca/`, `.env` y `proyectos/`.
+<!-- /IA -->
+
+## Antes del paso 1: presentarte (una vez)
 
 Dile en 3-4 líneas:
 - Qué es esto: un estudio de vídeo que se maneja hablando. Tú escribes los vídeos como páginas animadas y los conviertes en MP4 en su ordenador.
@@ -51,13 +95,32 @@ npm install
 npx hyperframes --version          # 0.9.72
 ```
 
-**Skills oficiales** (instrucciones para que sepas usar Hyperframes y GSAP), solo en esta carpeta. Elige `claude-code` si eres Claude Code, `codex` si eres Codex; para otro agente, `npx --yes skills@1.5.18 add --help` lista los nombres:
+**Skills oficiales** (instrucciones para que sepas usar Hyperframes y GSAP), solo en esta carpeta:
 
+<!-- IA:fuente -->
+(El paso 0 deja aquí solo el comando de tu IA: `--agent claude-code` para Claude Code, `--agent codex` para Codex y `--agent universal` para otras, que instala en `.agents/skills/`.)
+<!-- /IA -->
+<!-- IA:claude -->
 ```bash
 npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use --agent claude-code --copy -y
 npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils --agent claude-code --copy -y
 ```
-- Quedan en `.claude/skills/` (Claude Code) o `.agents/skills/` (Codex), junto a las de este repo. Repetir no duplica.
+- Quedan en `.claude/skills/`, junto a las de este repo. Repetir no duplica.
+<!-- /IA -->
+<!-- IA:codex -->
+```bash
+npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use --agent codex --copy -y
+npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils --agent codex --copy -y
+```
+- Quedan en `.agents/skills/`, junto a las de este repo. Repetir no duplica. Necesitan internet: Codex te pedirá aprobación.
+<!-- /IA -->
+<!-- IA:otra -->
+```bash
+npx --yes skills@1.5.18 add heygen-com/hyperframes --skill hyperframes hyperframes-cli hyperframes-registry media-use --agent universal --copy -y
+npx --yes skills@1.5.18 add greensock/gsap-skills --skill gsap-core gsap-timeline gsap-performance gsap-plugins gsap-utils --agent universal --copy -y
+```
+- Quedan en `.agents/skills/` (formato estándar), junto a las de este repo. Repetir no duplica. Si tu herramienta no carga skills sola, léelas como documentación cuando haga falta.
+<!-- /IA -->
 - No instales `reverse-any-video` ni `style-sampling`: piden el plan Pro de Hyperframes.
 - Las skills nuevas se cargan en la próxima sesión; para terminar este onboarding no hacen falta.
 - Hyperframes puede avisar "N HyperFrames skills out of date or missing" y sugerir `npx hyperframes skills update`: es esperable (cuenta skills que no instalamos a propósito y versiones más nuevas que la fijada). No lo corras: mantén las versiones de este paso.
@@ -122,11 +185,11 @@ Anota en el estado qué cuentas quedaron configuradas (sí/no, nunca las claves)
 
 ## Paso 5: su marca (desde sus archivos)
 
-**No le pidas que describa su marca de cero.** Preguntale primero:
+**No le pidas que describa su marca de cero.** Pregúntale primero:
 
 > "¿Tienes en tu ordenador archivos de tu marca? Por ejemplo: un manual de marca en PDF, logos, archivos de tipografías, capturas de tu web o de tus redes, piezas o vídeos anteriores. Dime en qué carpeta están (o arrástralos aquí) y los analizo yo. Si tienes web, pásame la dirección."
 
-**Si tiene archivos**, analizalos directamente desde ahí (sin moverlos):
+**Si tiene archivos**, analízalos directamente desde ahí (sin moverlos):
 1. Lista la carpeta y cuéntale qué encontraste.
 2. **PDF:** ábrelo y lee sus páginas (colores con hex/RGB/CMYK, tipografías, usos del logo, tono). Si es largo, empieza por el índice y las páginas de color y tipografía.
 3. **Colores de archivos:** `node scripts/extraer-colores.mjs <carpeta>` saca los hex de SVG/CSS y los dominantes de imágenes. Mira también las imágenes (logos, capturas) para entender qué color es fondo, cuál es acento y cuál texto. Prioriza lo que diga el manual sobre lo que se deduzca de una imagen.
@@ -135,7 +198,7 @@ Anota en el estado qué cuentas quedaron configuradas (sí/no, nunca las claves)
 6. **Web:** si puedes leer páginas web, mira colores y fuentes de su CSS; si no, pídele una captura.
 7. **Tono:** de los textos del manual, de su web o de sus publicaciones (trato, cómo suena, palabras que usa y que no).
 
-**Si no tiene nada**, entrevistalo en **5 preguntas** (de a una): (1) nombre de la marca y a qué se dedica; (2) a quién le habla; (3) tres adjetivos de cómo quiere que se sienta; (4) un color que le guste y uno que odie; (5) dos o tres cuentas o marcas cuya estética le gusten (solo como referencia de sensación, no para copiar). Propón una identidad mínima: fondo, superficie, texto, texto suave, acento, acento 2 y negativo con buen contraste, y una tipografía libre (Google Fonts, OFL) para títulos y otra para texto.
+**Si no tiene nada**, entrevístalo en **5 preguntas** (de una en una): (1) nombre de la marca y a qué se dedica; (2) a quién le habla; (3) tres adjetivos de cómo quiere que se sienta; (4) un color que le guste y uno que odie; (5) dos o tres cuentas o marcas cuya estética le gusten (solo como referencia de sensación, no para copiar). Propón una identidad mínima: fondo, superficie, texto, texto suave, acento, acento 2 y negativo con buen contraste, y una tipografía libre (Google Fonts, OFL) para títulos y otra para texto.
 
 **En los dos casos:**
 1. Escribe `DESIGN.md` en la raíz con la plantilla `plantillas/DESIGN.plantilla.md` (paleta con hex y su variable, tipografías, logo, tono, reglas, dónde publica, fuentes analizadas). Comprueba contraste (texto/fondo ≥ 4,5:1).
@@ -163,6 +226,7 @@ Dile, corto:
 1. Qué quedó instalado y activado (módulos, cuentas configuradas, marca en `DESIGN.md`).
 2. Cómo pedir el próximo vídeo: "Hazme un vídeo de…" en una sesión en esta carpeta; le vas a preguntar el estilo cada vez.
 3. Qué gasta dinero (solo los módulos de voz, avatar e IA de vídeo, siempre con su OK) y qué no.
-4. Cómo desinstalar: borrar esta carpeta. Las cachés de usuario (`~/.cache/hyperframes`: navegador de render y modelos) se borran con `npx hyperframes clean`; Node, FFmpeg y whisper, con el mismo gestor con el que se instalaron.
+4. Que abra una **sesión nueva** de su IA en esta carpeta para pedir vídeos: así se cargan la guía, las skills y los agentes que dejó el paso 0.
+5. Cómo desinstalar: borrar esta carpeta. Las cachés de usuario (`~/.cache/hyperframes`: navegador de render y modelos) se borran con `npx hyperframes clean`; Node, FFmpeg y whisper, con el mismo gestor con el que se instalaron.
 
 Marca todos los pasos como hechos en `estado-onboarding.json` y anota en `pendientes` lo que haya quedado para más adelante.

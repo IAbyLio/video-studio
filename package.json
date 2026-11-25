@@ -13,7 +13,10 @@
     "cuentas": "node scripts/comprobar-cuentas.mjs",
     "nuevo": "node scripts/nuevo-proyecto.mjs",
     "copias": "node scripts/sincronizar-copias.mjs",
-    "copias:check": "node scripts/sincronizar-copias.mjs --check"
+    "copias:check": "node scripts/sincronizar-copias.mjs --check",
+    "adaptar": "node scripts/adaptar-ia.mjs",
+    "prompts": "node scripts/prompts-instalacion.mjs",
+    "prompts:check": "node scripts/prompts-instalacion.mjs --check"
   },
   "devDependencies": {
     "hyperframes": "0.9.72"

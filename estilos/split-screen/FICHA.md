@@ -15,7 +15,7 @@ Tu cara centrada en la mitad de arriba y un panel grande en la mitad de abajo co
 ## Cómo está hecho
 - Arranca en pantalla completa; a los 0,8 s la cara sube a la mitad de arriba (`y: -300`, recortada a y 960) en 0,45 s, y 0,2 s después el panel sube desde abajo (`power3.out`, sin rebote: es una losa).
 - Panel: `top: 960`, borde superior de color, esquinas redondeadas solo arriba, sombra hacia arriba. Su **fondo** puede llegar al borde inferior (es fondo); su **contenido** queda dentro de x 80–880 e y ≤ 1440.
-- Las barras crecen con `scaleY` desde la base, de a una; la ganadora late unas veces (repeticiones finitas: nunca `repeat: -1`).
+- Las barras crecen con `scaleY` desde la base, una a una; la ganadora late unas veces (repeticiones finitas: nunca `repeat: -1`).
 
 ## Adaptarlo
 - Cambia los `data-h` (altura relativa) y `data-v` (rótulo) de las barras, o reemplaza el contenido del panel por tu tarjeta.

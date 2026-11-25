@@ -1,6 +1,6 @@
-# Estudio de vídeo: guía de trabajo para la IA (Codex y otros agentes con terminal)
+# Estudio de vídeo: guía de trabajo para la IA (AGENTS.md)
 
-> Mismo contenido que `CLAUDE.md` (que es el que lee Claude Code). Probado con Claude Code; con otros agentes está escrito con cuidado pero sin probar: si algo no coincide (por ejemplo, no tienes herramienta de subagentes o de leer imágenes), díselo a la persona en vez de improvisar. Las skills de `.claude/skills/` son Markdown: lee su `SKILL.md` como documentación.
+> **Repo sin adaptar:** antes de nada, haz el paso 0 de `ONBOARDING.md` (deja solo los archivos de tu IA). Mismo cuerpo que `CLAUDE.md`, copiado por `node scripts/sincronizar-copias.mjs`: no lo edites a mano.
 
 ## Primero: ¿está instalado?
 
@@ -31,11 +31,35 @@ Un estudio de vídeo que se maneja hablando. Los vídeos se escriben como págin
 6. Si en `estado-onboarding.json` la telemetría quedó apagada, pon `DO_NOT_TRACK=1` delante de cada comando `npx`.
 7. Si un paso falla dos veces, para, muestra el error y propón qué hacer.
 
+## Cómo trabajar con tu IA
+
+<!-- IA:claude -->
+- **Skills:** las de `.claude/skills/` se cargan solas cuando la tarea encaja con su descripción (también con `/nuevo-video` o `/analisis-viralidad`). Antes de cada vídeo, `nuevo-video`.
+- **Agentes:** tras cada borrador, lanza el agente `video-qa` (`.claude/agents/video-qa.md`) con tu herramienta de agentes. `video-orquestador` (`.claude/agents/video-orquestador.md`) solo para piezas largas.
+- **Fotogramas:** ábrelos con tu herramienta de lectura (lee PNG) y míralos de verdad.
+- **Vista previa:** `npx hyperframes preview` como comando en segundo plano; ciérralo al terminar.
+<!-- /IA -->
+<!-- IA:codex -->
+- **Sesión:** Codex lee este archivo, las skills y los agentes al empezar la sesión. Si cambian (por ejemplo, tras el onboarding), pide a la persona que abra una sesión nueva en la carpeta.
+- **Permisos y red:** en el modo habitual (Auto: escribir en la carpeta y pedir aprobación), los comandos que necesitan internet (`npm install`, `npx …` la primera vez, descargas de modelos) te piden aprobación. Avísale a la persona de que es normal y de qué hace cada uno.
+- **Skills:** las de `.agents/skills/` las eliges tú cuando la tarea encaja con su descripción; la persona también puede pedirlas con `$nuevo-video` o desde `/skills`. Antes de cada vídeo, `nuevo-video`.
+- **Agentes:** `.codex/agents/` tiene dos custom agents. Codex delega cuando se le pide, así que aquí se pide: tras cada borrador, delega la revisión en el agente `video-qa` pasándole la carpeta del proyecto y la ruta del MP4. Para una pieza larga, `video-orquestador`. Si en esta sesión no puedes lanzar subagentes, sigue tú sus `developer_instructions`.
+- **Fotogramas:** ábrelos con tu herramienta para ver imágenes y míralos de verdad. Si no puedes ver imágenes, díselo a la persona y pídele que los mire ella.
+- **Vista previa:** si tu entorno no deja un proceso en segundo plano, pídele a la persona que corra `npx hyperframes preview` en su terminal desde la carpeta del proyecto, o renderiza un borrador y dile dónde está.
+<!-- /IA -->
+<!-- IA:otra -->
+- **Esta guía es tu fuente única.** No hay otra configuración específica de tu herramienta. Escrito con cuidado pero sin probar: si algo no coincide, díselo a la persona en vez de improvisar.
+- **Skills:** `.agents/skills/<nombre>/SKILL.md`, en el formato estándar Agent Skills (agentskills.io). Si tu herramienta las carga sola, perfecto; si no, léelas como documentación cuando la tarea encaje: `nuevo-video` antes de cada vídeo y `analisis-viralidad` para guiones.
+- **Agentes:** `agentes/video-qa.md` (revisión de cada borrador) y `agentes/video-orquestador.md` (piezas largas) son checklists. Si puedes lanzar subagentes, dales el archivo como instrucciones; si no, síguelos tú.
+- **Gemini CLI:** por defecto lee `GEMINI.md`, no `AGENTS.md`. Con el OK de la persona, crea `.gemini/settings.json` con `{"context": {"fileName": ["AGENTS.md"]}}` y abre una sesión nueva.
+- **Fotogramas y vista previa:** si no puedes ver imágenes o dejar un proceso en segundo plano, díselo a la persona: que mire ella los PNG y corra `npx hyperframes preview` en su terminal.
+<!-- /IA -->
+
 ## Antes de CADA vídeo: dos selectores y cuatro preguntas
 
 Usa la skill `nuevo-video` (`.claude/skills/nuevo-video/SKILL.md`). En resumen:
 
-**1. Selector de estilo visual.** Muestra el catálogo leyendo `estilos/catalogo.json` (nombre, una línea, estado probado/experimental y qué necesita) y, si la persona puede ver imágenes, señalale `estilos/README.md` o las miniaturas. Que elija uno. Si el estilo necesita algo que no tiene (un vídeo suyo, una voz, un recorte, una cuenta de pago), dilo antes de seguir y ofrece alternativa.
+**1. Selector de estilo visual.** Muestra el catálogo leyendo `estilos/catalogo.json` (nombre, una línea, estado probado/experimental y qué necesita) y, si la persona puede ver imágenes, señálale `estilos/README.md` o las miniaturas. Que elija uno. Si el estilo necesita algo que no tiene (un vídeo suyo, una voz, un recorte, una cuenta de pago), dilo antes de seguir y ofrece alternativa.
 
 | id | Estilo |
 |---|---|
@@ -52,7 +76,7 @@ Usa la skill `nuevo-video` (`.claude/skills/nuevo-video/SKILL.md`). En resumen:
 
 **2. Selector de estilo de captions** (si el vídeo tiene voz o texto que sigue una frase): `natural` (1-3 palabras centradas, la clave resaltada; probado) o `premium` (base sobria + línea de énfasis con brillo, entradas y salidas variadas, layout que cambia de sitio, detrás del sujeto si hay recorte o 3D; experimental). Muestra los dos ejemplos (`modulos/captions/ejemplos/`) si la persona no los conoce. Cómo se usa cada uno: `modulos/captions/ESTILOS.md`.
 
-**3. Cuatro preguntas** (de a una, opciones cerradas cuando se pueda): dónde se publica (fija formato y zonas seguras), cuánto dura, qué se dice (guion, puntos o un audio) y qué material hay (vídeo, audio, imágenes). Si hay guion de reel, ofrece pasarlo por `analisis-viralidad` (y su crítico) antes de grabar o generar voz.
+**3. Cuatro preguntas** (de una en una, opciones cerradas cuando se pueda): dónde se publica (fija formato y zonas seguras), cuánto dura, qué se dice (guion, puntos o un audio) y qué material hay (vídeo, audio, imágenes). Si hay guion de reel, ofrece pasarlo por `analisis-viralidad` (y su crítico) antes de grabar o generar voz.
 
 Lo que NO preguntes: colores, fuentes ni tono. Salen de `DESIGN.md` y `marca/marca.css`.
 
@@ -65,7 +89,7 @@ Lo que NO preguntes: colores, fuentes ni tono. Salen de `DESIGN.md` y `marca/mar
 5. `npx hyperframes lint` desde la carpeta del proyecto: 0 errores.
 6. **Mira antes de enseñar:** `npx hyperframes snapshot --at <tiempos> --output renders/f` y abre los PNG (herramienta de lectura de imágenes). Pásalos por `node ../../scripts/zonas-seguras.mjs renders/f/*.png --format <fmt>` y míralos: nada que no sea fondo en rojo.
 7. Vista previa: `npx hyperframes preview` (en segundo plano) y pásale la dirección a la persona. Espera su OK explícito; el silencio no es un sí. Si no puede abrir el navegador, renderiza un borrador y dile dónde está.
-8. Borrador: `npx hyperframes render --quality draft --output renders/borrador.mp4`. Revisión con el agente `video-qa` (o a mano: fotogramas de cada momento con `node scripts/extract-frames.mjs`, mirados de verdad).
+8. Borrador: `npx hyperframes render --quality draft --output renders/borrador.mp4`. Revisión con el agente `video-qa` (si no puedes lanzarlo, a mano: fotogramas de cada momento con `node scripts/extract-frames.mjs`, mirados de verdad).
 9. Con el OK: `npx hyperframes render --quality standard --output renders/<slug>.mp4`. Dile dónde quedó.
 10. Cierra la vista previa al terminar (no dejes procesos colgados).
 

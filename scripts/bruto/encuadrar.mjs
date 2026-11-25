@@ -93,7 +93,7 @@ if (A.cara && A.cara !== 'auto' && A.cara !== true) {
     metodo = 'vision';
     if (con.length < muestras.length) avisos.push(`cara detectada en ${con.length}/${muestras.length} muestras (en el resto no había cara o salió de cuadro)`);
   } else {
-    avisos.push(`sin detección fiable (cara en ${con.length}/${muestras.length} muestras): recorte CENTRADO. Mira encuadre-hoja.png y fijalo con --cara <x>.`);
+    avisos.push(`sin detección fiable (cara en ${con.length}/${muestras.length} muestras): recorte CENTRADO. Mira encuadre-hoja.png y fíjalo con --cara <x>.`);
     cara = { cx: W / 2, cy: H * 0.4, w: H * 0.3, h: H * 0.3 };
   }
 }

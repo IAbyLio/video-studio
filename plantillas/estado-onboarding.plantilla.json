@@ -1,20 +1,55 @@
 {
-  "_doc": "La IA copia esta plantilla como estado-onboarding.json en la raíz al empezar ONBOARDING.md y la actualiza al cerrar cada paso, para poder retomar. No guarda claves (las claves solo viven en .env).",
+  "_doc": "La crea el paso 0 de ONBOARDING.md (scripts/adaptar-ia.mjs) como estado-onboarding.json en la raíz; la IA la actualiza al cerrar cada paso, para poder retomar. agente: claude | codex | otra. No guarda claves (las claves solo viven en .env).",
   "version": 1,
   "agente": "",
   "sistema": "",
   "telemetria": null,
   "pasos": {
-    "1_requisitos": { "hecho": false, "fecha": null, "notas": "" },
-    "2_hyperframes": { "hecho": false, "fecha": null, "version": null, "render_prueba": null },
-    "3_modulos": { "hecho": false, "fecha": null },
-    "4_cuentas": { "hecho": false, "fecha": null },
-    "5_marca": { "hecho": false, "fecha": null, "fuentes": [] },
-    "6_destino": { "hecho": false, "fecha": null },
-    "7_primer_video": { "hecho": false, "fecha": null, "proyecto": null }
+    "0_ia": {
+      "hecho": false,
+      "fecha": null,
+      "ia": null
+    },
+    "1_requisitos": {
+      "hecho": false,
+      "fecha": null,
+      "notas": ""
+    },
+    "2_hyperframes": {
+      "hecho": false,
+      "fecha": null,
+      "version": null,
+      "render_prueba": null
+    },
+    "3_modulos": {
+      "hecho": false,
+      "fecha": null
+    },
+    "4_cuentas": {
+      "hecho": false,
+      "fecha": null
+    },
+    "5_marca": {
+      "hecho": false,
+      "fecha": null,
+      "fuentes": []
+    },
+    "6_destino": {
+      "hecho": false,
+      "fecha": null
+    },
+    "7_primer_video": {
+      "hecho": false,
+      "fecha": null,
+      "proyecto": null
+    }
   },
   "modulos": [],
-  "cuentas": { "elevenlabs": false, "heygen": false, "ia_video": null },
+  "cuentas": {
+    "elevenlabs": false,
+    "heygen": false,
+    "ia_video": null
+  },
   "destinos": [],
   "formato_por_defecto": null,
   "pendientes": []

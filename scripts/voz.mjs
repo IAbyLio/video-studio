@@ -82,7 +82,7 @@ export function lintGuion(text, force, model) {
     throw new ErrorVoz('El texto parece traer anotaciones de producción (corchetes, encabezados, acotaciones). A la voz va SOLO el texto ' +
       'hablado' + (model === 'v4' ? ' (en v4 se permiten etiquetas cortas [en inglés])' : '') + '. Guía: modulos/voz/guion-para-voz.md. Usa --force si es a propósito.');
   }
-  if (text.length > 9500) throw new ErrorVoz(`El guion tiene ${text.length} caracteres: partilo en más párrafos (el límite es ~10k por pedido).`);
+  if (text.length > 9500) throw new ErrorVoz(`El guion tiene ${text.length} caracteres: pártelo en más párrafos (el límite es ~10k por pedido).`);
 }
 
 async function tts({ perfil, model, text, settings, prevText, nextText, prevRequestIds }) {

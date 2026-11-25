@@ -1,5 +1,5 @@
 {
-  "_doc": "Fuente única de las zonas seguras por formato. La lee scripts/zonas-seguras.mjs y la explica modulos/zonas-seguras/README.md. Rectángulos en px [x, y, ancho, alto] sobre el lienzo base; para otro tamaño se escala por ancho/base.w. prohibida = ningún objeto (ni importante ni de relleno). precaucion = depende del caso. origen: 'guia' = medida que publican guías de diseño para la plataforma (2026); 'medido' = medido mirando la interfaz; 'criterio' = margen prudente propio, sin dato oficial. Las plataformas cambian su interfaz: revisalo de vez en cuando subiendo un borrador privado.",
+  "_doc": "Fuente única de las zonas seguras por formato. La lee scripts/zonas-seguras.mjs y la explica modulos/zonas-seguras/README.md. Rectángulos en px [x, y, ancho, alto] sobre el lienzo base; para otro tamaño se escala por ancho/base.w. prohibida = ningún objeto (ni importante ni de relleno). precaucion = depende del caso. origen: 'guia' = medida que publican guías de diseño para la plataforma (2026); 'medido' = medido mirando la interfaz; 'criterio' = margen prudente propio, sin dato oficial. Las plataformas cambian su interfaz: revísalo de vez en cuando subiendo un borrador privado.",
   "formats": {
     "reel": {
       "label": "Reel / TikTok / Short vertical 9:16",

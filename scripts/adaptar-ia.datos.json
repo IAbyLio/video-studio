@@ -1,0 +1,21 @@
+{
+  "_doc": "Datos de scripts/adaptar-ia.mjs. Las descripciones de Claude Code viven en el frontmatter de cada SKILL.md y de cada agente de .claude/; aquí están las versiones para Codex y para el formato estándar Agent Skills (agentskills.io): un solo campo 'description' de 1024 caracteres como máximo, con el caso de uso y las palabras que lo disparan al principio (Codex recorta las descripciones si hay muchas skills). nombre_codex: nombre del custom agent de Codex (con guion bajo, como en los ejemplos de su documentación).",
+  "skills": {
+    "nuevo-video": {
+      "descripcion": "Crear o cambiar un vídeo de este estudio (vídeo, reel, short, story). Úsala cuando la persona pida 'hazme un vídeo/reel/short', 'quiero un vídeo de…', 'arma un vídeo con este audio o vídeo' o un cambio en un vídeo de proyectos/. Guía el flujo completo: selector de estilo visual (estilos/catalogo.json), selector de captions, cuatro preguntas, proyecto con la marca de la persona, construcción con gates (zona segura, lint, fotogramas mirados, vista previa con OK, QA del borrador) y render final. No sirve para instalar (ONBOARDING.md) ni para escribir solo un guion (skill analisis-viralidad)."
+    },
+    "analisis-viralidad": {
+      "descripcion": "Diagnosticar, reescribir y puntuar guiones, ideas, ganchos y reels para que enganchen. Úsala cuando la persona pida 'analiza esta idea/guion/reel', '¿esto puede funcionar?', 'dale un mejor gancho', 'hazlo más viral', 'reescribe este guion', 'desmonta este reel' o 'puntúa este guion', y antes de grabar o generar la voz de un vídeo con guion. Método: nichos SSDD, filtro 5-50, 5 pilares, 30 ganchos y estructura de 8 piezas. Modos: diagnóstico, transformación, solo gancho, producción (entrega guion-audio.txt y GUION-VIDEO.md) y crítico (rúbrica 0-10 para un segundo agente, umbral 8, máximo 3 rondas). No construye el vídeo (skill nuevo-video)."
+    }
+  },
+  "agentes": {
+    "video-qa": {
+      "nombre_codex": "video_qa",
+      "descripcion": "Revisión de un borrador MP4 de este estudio. Úsalo justo después de cada render de borrador o cuando la persona diga 'revisa el vídeo': saca los fotogramas clave, los mira, arregla en hasta 3 intentos lo objetivo (fotogramas negros, texto que se sale, cara cortada, escena en la palabra equivocada, objetos bajo la interfaz de la app, efectos de sonido mudos) y reporta lo de gusto sin tocarlo. No hace el render final."
+    },
+    "video-orquestador": {
+      "nombre_codex": "video_orquestador",
+      "descripcion": "Coordinación de un vídeo largo o con muchas piezas (guion + voz + avatar + grabación + build + sonido). Úsalo solo cuando la persona pida una pieza así; para un vídeo corto normal basta la skill nuevo-video en la sesión principal. Lleva la entrevista, el guion con analisis-viralidad y su crítico, los módulos que hagan falta, el build con gates y la QA con video_qa."
+    }
+  }
+}

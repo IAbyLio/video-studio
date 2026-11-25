@@ -49,10 +49,10 @@ Una **pizarra en perspectiva que se construye delante del espectador**: notas ad
 - **Orden de capas en 3D**: separa con z mínimo (cuadrícula 0, sombras 0,5, tinta 1, anotaciones 2, notas 4+). En el ejemplo, con las notas en z 0 la sombra quedaba POR ENCIMA de la nota y la oscurecía.
 - **El tablero tiene que ser más grande que lo que ve el zoom-out**: si no, aparece el borde. El ejemplo desplaza el contenido 1000 px dentro de un tablero de 4000 px.
 - **Foco de cámara por encima de las captions** (`FOCO_Y = 760` en el ejemplo) para que las notas no pisen la banda de texto.
-- Los extremos redondeados de un trazo pintan un punto aunque no haya empezado: ocultalo con `visibility` hasta que el progreso sea > 0.
+- Los extremos redondeados de un trazo pintan un punto aunque no haya empezado: ocúltalo con `visibility` hasta que el progreso sea > 0.
 - Nada de `will-change: transform` en el tablero: Chromium lo rasteriza a la escala inicial y el texto sale borroso al hacer zoom.
 - Mide los anclajes (palabras a rodear, subrayados) después de `document.fonts.ready`.
-- El lápiz cuenta como objeto para las zonas seguras: inclinalo hacia dentro del cuadro.
+- El lápiz cuenta como objeto para las zonas seguras: inclínalo hacia dentro del cuadro.
 
 ## Cómo adaptarlo
 
