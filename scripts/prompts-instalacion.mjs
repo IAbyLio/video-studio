@@ -20,7 +20,7 @@ export function generar(datos) {
     '<!-- Generado por scripts/prompts-instalacion.mjs desde prompts/prompts.json: edita el JSON, no este archivo. -->',
   ];
   for (const p of datos.prompts) {
-    L.push('', `## ${p.etiqueta}${p.probado ? '' : ' (sin probar)'}`, '', '```text', p.texto, '```');
+    L.push('', `## ${p.etiqueta}`, '', '```text', p.texto, '```');
   }
   return L.join('\n') + '\n';
 }
